@@ -1,8 +1,8 @@
 
 
 export function filterMap<T>(map: KeyMap<T>, filter: (item: T) => boolean) {
-  let positive: KeyMap<T> = {}
-  let negative: KeyMap<T> = {}
+  const positive: KeyMap<T> = {}
+  const negative: KeyMap<T> = {}
   for (const key in map) {
     if (filter(map[key]))
       positive[key] = map[key]
@@ -11,6 +11,14 @@ export function filterMap<T>(map: KeyMap<T>, filter: (item: T) => boolean) {
     }
   }
   return [positive, negative] as [positive: KeyMap<T>, negative: KeyMap<T>]
+}
+
+export function mapMap<T, V>(map: KeyMap<T>, mapping: (model: T) => V) {
+  const result: KeyMap<V> = {}
+  for (const key in map) {
+    result[key] = mapping(map[key])
+  }
+  return result
 }
 
 export function mapContains<T>(map: KeyMap<T>, filter: (item: T) => boolean, matchAll?: boolean) {

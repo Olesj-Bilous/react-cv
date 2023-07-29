@@ -40,6 +40,11 @@ interface RatedSkill extends EraEvent {
   skill: string
 }
 
+interface PeriodFeature extends Model {
+  feature: string
+  period: Period
+}
+
 interface IconicItem extends EraEvent {
   icon: string
   item: string
@@ -49,6 +54,7 @@ interface ModelStore {
   ratedSkills: ModelMap<RatedSkill>
   iconicItems: ModelMap<IconicItem>
   periods: ModelMap<Period>
+  periodFeatures: ModelMap<PeriodFeature>
   eras: ModelMap<Era>
   profiles: ModelMap<Profile>
 }

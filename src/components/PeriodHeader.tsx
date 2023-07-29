@@ -1,13 +1,13 @@
 import { Header } from "./Header";
 import { Period } from "./Period";
 
-export function PeriodHeader({ startDate, endDate, toPresent, introduction, ...headerProps }: Period & React.Attributes) {
+export function PeriodHeader({ id, startDate, endDate, toPresent, introduction, ...headerProps }: Period & React.Attributes) {
   return (
     <>
-      <div className="period-header">
+      <header>
         <Header {...headerProps}  />
-        <Period {...{ startDate, endDate, toPresent }} />
-      </div>
+        <Period {...{ id, startDate, endDate, toPresent }} />
+      </header>
       {
         introduction && (
           <div className="introduction">

@@ -6,13 +6,15 @@ export function TitledArray<TProps extends Model>({ title, items, Component }: T
       <h3>
         {title}
       </h3>
-      <div className="items">
+      <ul>
         {
           items.map((item, itemIndex) => (
-            <Component key={item.id} {...item} />
+            <li key={itemIndex}>
+              <Component {...item} />
+            </li>
           ))
         }
-      </div>
+      </ul>
     </section>
   )
 }

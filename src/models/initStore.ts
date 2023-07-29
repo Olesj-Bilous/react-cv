@@ -20,8 +20,28 @@ export const initStore: ModelStore = {
         id: '0',
         title: 'Watching cows',
         subtitle: 'Local farm',
+        introduction: 'This is the life I been leadin\' at that farm hitherto',
         startDate: new Date(1955, 3),
         era: '1'
+      }
+    }
+  },
+  periodFeatures: {
+    models: {
+      0: {
+        id: '0',
+        feature: 'I seen em cows grow from calves',
+        period: '0'
+      },
+      1: {
+        id: '1',
+        feature: 'I seen em leaves grow from green to yella',
+        period: '0'
+      },
+      2: {
+        id: '2',
+        feature: 'I seen da sun rise at dawn and seen it settin over yon',
+        period: '0'
       }
     }
   },
