@@ -9,7 +9,7 @@ export const DateFormatContext = createContext <null | {
   formatOptions: Intl.DateTimeFormatOptions
 }>(null)
 
-export function Period({ startDate, endDate, toPresent }: PeriodProps & React.Attributes) {
+export function Period({ startDate, endDate, toPresent, id }:Model & PeriodProps & React.Attributes) {
   const settings = useContext(DateSettingsContext)
   if (settings == null)
     throw new Error('No value was provided for DateSettingsContext')
