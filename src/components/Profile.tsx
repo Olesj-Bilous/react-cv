@@ -1,19 +1,15 @@
-import { useZustand } from "../hooks/useStore"
+import { useZustand } from "../hooks/useZustand"
 import { IconicItem } from "./IconicItem"
 import { DateFormatContext } from "./Period"
-import { PeriodHeader } from "./PeriodHeader"
+import { PeriodHeader } from "./Header.Period"
 import { RatedSkill } from "./RatedSkill"
-import { TitledArray } from "./TitledArray"
+import { Section } from "./Section"
 
 
 export interface ProfileSections {
-  iconicItems: TitledArrayMap<IconicItem>
-  ratedSkills: TitledArrayMap<RatedSkill>
-  periods: TitledArrayMap<Period>
-}
-
-export interface ProfileProps {
-  order: (keyof ProfileSections)[]
+  iconicItems: SectionArray<IconicItem>
+  ratedSkills: SectionArray<RatedSkill>
+  periods: SectionArray<Period>
 }
 
 const components = {
@@ -22,39 +18,55 @@ const components = {
   periods: PeriodHeader
 }
 
-export function Profile({ order }: ProfileProps & React.Attributes) {
-  const sections = useZustand(store => store.getProfileSections())
-  const counters: {
-    [Key in keyof ProfileSections]: number
-  } = {
-    iconicItems: 0,
-    ratedSkills: 0,
-    periods: 0
-  }
+export function Profile() {
+  const profileSections = useZustand(store => store.getProfileSections())
+  const { iconicItems, periods, ratedSkills } = profileSections
 
   let content: JSX.Element[] = []
-  if (!order.length)
-    order.push(...Object.getOwnPropertyNames(sections) as (keyof ProfileSections)[])
-  for (const key of order) {
-      // casting Component to a function accepting a union of parameters rather than a union of functions, each accepting different parameters,
+  const counters = {
+    iconicItems: 0,
+    periods: 0,
+    ratedSkills: 0
+  }
+  while (counters.iconicItems < iconicItems.length
+    || counters.periods < periods.length
+    || counters.ratedSkills < ratedSkills.length) {
+    const key = [
+      {
+        item: iconicItems[counters.iconicItems]?.order ?? Number.POSITIVE_INFINITY,
+        key: 'iconicItems' as keyof ProfileSections
+      }, {
+        item: periods[counters.periods]?.order ?? Number.POSITIVE_INFINITY,
+        key: 'periods' as keyof ProfileSections
+      }, {
+        item: ratedSkills[counters.ratedSkills]?.order ?? Number.POSITIVE_INFINITY,
+        key: 'ratedSkills' as keyof ProfileSections
+      }
+    ].reduce(
+      (previous, current) => current.item < previous.item
+        ? current : previous
+    ).key
+      // casting Component to 
+      //  a function accepting a union of parameters 
+      //  rather than a union of functions,
+      //   each of which accept different parameters,
       //  avoids code duplication by pseudogenerising Component
       //  but introduces the danger of calling Component with the wrong parameters type
       // we ensure that only the right type of parameters are passed to Component by retrieving them from sections by key
-      //  unfortunately, TypeScript is not capable of recognising this
-    const { map, order: sectionOrder } = sections[key]
+      //  unfortunately, TypeScript does not recognise this
+    const sections = profileSections[key]
     const Component = components[key] as ({ ...props }: (IconicItem | RatedSkill | Period) & React.Attributes) => JSX.Element
 
-    if (!sectionOrder.length)
-      sectionOrder.push(...Object.getOwnPropertyNames(map))
-
-    const props = map[sectionOrder[counters[key]++]]
+    const i = counters[key]++
+    const props = sections[i]
     if (props)
-    content.push(
-      <TitledArray<IconicItem | RatedSkill | Period> key={`${key}/${counters[key]}`} {...{
-        Component,
-        ...props
-      }} />
-    )
+      content.push(
+        <Section<IconicItem | RatedSkill | Period> {...{
+          key: `${key}/${i}`,
+          Component,
+          ...props
+        }} />
+      )
   }
 
   return (

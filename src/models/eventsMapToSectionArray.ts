@@ -1,14 +1,11 @@
 import { filterMap, mapToArray } from '../utils/mapQueries'
 
-export function eventsMapToTitledArrayMap<V extends EraEvent, M = {}>(
+export function eventsMapToSectionArray<V extends EraEvent, M = {}>(
   events: KeyMap<ModelType<V> & M>,
   eras: KeyMap<ModelType<Era>>,
   profile: Profile
 ) {
-  const titledArray: TitledArrayMap<V & M> = {
-    map: {},
-    order: []
-  }
+  const sections: SectionArray<V & M> = []
   for (const key in eras) {
     const era = eras[key]
     const [filteredEvents] = filterMap(events, event => event.era === era.id)
@@ -18,14 +15,16 @@ export function eventsMapToTitledArrayMap<V extends EraEvent, M = {}>(
         ...era,
         profile
       }
-    }) as V & M)
+    }) as V & M).sort((a, b) => a.order - b.order)
+    const { id, title, order } = era
     if (items.length) {
-      titledArray.map[era.title] = {
-        title: era.title,
-        items,
-        order: []
-      }
+      sections.push({
+        id,
+        title,
+        order,
+        items
+      })
     }
   }
-  return titledArray
+  return sections.sort((a, b) => a.order - b.order)
 }

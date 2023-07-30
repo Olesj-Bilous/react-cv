@@ -2,18 +2,16 @@ import { useState } from 'react'
 import './App.css'
 
 import { Header, HeaderLevelContext } from './components/Header'
-import { useZustand } from './hooks/useStore'
+import { useZustand } from './hooks/useZustand'
 
 import { Profile } from './components/Profile'
 import { DateSettingsContext } from './components/Period'
 import { Main } from './components/Main'
+import { ProfileHeader } from './components/Header.Profile'
 
 function App() {
   const {
-    firstName,
-    lastName,
-    profession,
-    description,
+    id,
     img
   } = useZustand(state => state.getSelectedProfile())
 
@@ -24,19 +22,11 @@ function App() {
 
   return (
     <DateSettingsContext.Provider value={dateSettings}>
-      <HeaderLevelContext.Provider value={{level: 1}}>
-        <header>
-          <div className="img-ctn">
-            <img src={img} width={150} />
-          </div>
-          <Header {...{
-            title: `${firstName} ${lastName}`,
-            subtitle: profession,
-            introduction: description
-          }} />
-        </header>
-      </HeaderLevelContext.Provider>
-      <Profile order={[]} />
+      <ProfileHeader {...{
+        id,
+        img
+      }} />
+      <Profile />
       <Main />
     </DateSettingsContext.Provider>
   )

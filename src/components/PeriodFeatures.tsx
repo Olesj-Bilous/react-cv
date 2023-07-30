@@ -1,15 +1,15 @@
-import { PeriodHeader } from "./PeriodHeader";
+import { PeriodHeader } from "./Header.Period";
 
 
-export function PeriodFeatures({ features, ...props }: Period & { features: string[] } & React.Attributes) {
+export function PeriodFeatures({ features, ...props }: Period & { features: PeriodFeature[] } & React.Attributes) {
   return (
     <article>
       <PeriodHeader {...props} />
       <ul>
         {
-          features.map((feature, index) => (
-            <li key={index}>
-              {feature}
+          features.map((feature) => (
+            <li key={feature.id}>
+              {feature.feature}
             </li>
           ))
         }

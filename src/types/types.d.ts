@@ -40,7 +40,7 @@ interface RatedSkill extends EraEvent {
   skill: string
 }
 
-interface PeriodFeature extends Model {
+interface PeriodFeature extends OrderedModel {
   feature: string
   period: Period
 }
@@ -67,24 +67,22 @@ interface Profile extends Model {
   img: string
 }
 
-interface Era extends Model {
+interface OrderedModel extends Model {
+  order: number
+}
+
+interface Era extends OrderedModel {
   title: string
   profile: Profile
 }
 
-interface EraEvent extends Model {
+interface EraEvent extends OrderedModel {
   era: Era
 }
 
-interface TitledArray<TItem extends Model> {
+interface Section<TItem extends Model> extends OrderedModel {
   title: string
   items: TItem[]
-  order: string[]
 }
 
-interface TitledArrayMap<TItem extends Model> {
-  map: {
-    [key: string]: TitledArray<TItem>
-  }
-  order: string[]
-}
+type SectionArray<TItem extends Model> = Section<TItem>[]

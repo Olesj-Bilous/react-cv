@@ -1,43 +1,30 @@
-import { TitledArray } from "./TitledArray"
-import { PeriodHeader } from "./PeriodHeader"
+import { Section } from "./Section"
+import { PeriodHeader } from "./Header.Period"
 import { DateFormatContext } from "./Period"
 import { PeriodFeatures } from "./PeriodFeatures"
 import { HeaderLevelContext } from "./Header"
-import { useZustand } from "../hooks/useStore"
+import { useZustand } from "../hooks/useZustand"
 
 
 export interface MainProps {
-  map: TitledArrayMap<Period & { features: string[] }>
+  map: SectionArray<Period & { features: string[] }>
 }
 
 export function Main() {
-  const {map,order} = useZustand(store => store.getMainPeriods())
-  if (!order.length)
-    order.push(...Object.getOwnPropertyNames(map))
-  const content: JSX.Element[] = []
-  for (const key of order) {
-    if (map[key]) {
-      const { title, items, order: arrayOrder } = map[key]
-      content.push(
-        <TitledArray {...{
-          key,
-          title,
-          items,
-          order: arrayOrder,
-          Component: PeriodFeatures
-        }} />
-      )
-    }
-  }
+  const sections = useZustand(store => store.getMainPeriods())
   return (
     <main>
       <DateFormatContext.Provider value={{formatOptions: {
         dateStyle: 'long'
       }
       }}>
-        <HeaderLevelContext.Provider value={{ level: 4 }}>  
-          {content}
-        </HeaderLevelContext.Provider>
+          {
+            sections.map((section, i) => <Section {...{
+              key: i,
+              ...section,
+              Component: PeriodFeatures
+            }} />)
+          }
       </DateFormatContext.Provider>
     </main>
   )

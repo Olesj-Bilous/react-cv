@@ -1,3 +1,4 @@
+import { useZustand } from "../hooks/useZustand";
 import { createContext, useContext } from "react";
 
 export const DateSettingsContext = createContext<null | {
@@ -9,7 +10,7 @@ export const DateFormatContext = createContext <null | {
   formatOptions: Intl.DateTimeFormatOptions
 }>(null)
 
-export function Period({ startDate, endDate, toPresent, id }:Model & PeriodProps & React.Attributes) {
+export function Period({ id }: Model & React.Attributes) {
   const settings = useContext(DateSettingsContext)
   if (settings == null)
     throw new Error('No value was provided for DateSettingsContext')
@@ -18,13 +19,11 @@ export function Period({ startDate, endDate, toPresent, id }:Model & PeriodProps
   if (options == null)
     throw new Error('No value was provided for DateFormatContext')
 
-  const end = (toPresent && settings.present)
-    || (endDate && endDate.toLocaleDateString(settings.locales, options.formatOptions))
+  const content = useZustand(store => store.getPeriodDateString(settings, options.formatOptions, id))
   
   return (
     <div className="date">
-      {`${startDate.toLocaleDateString(settings.locales, options.formatOptions)}`}
-      {end && ` - ${end}`}
+      {content}
     </div>
   )
 }
