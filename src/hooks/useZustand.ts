@@ -1,11 +1,14 @@
 import { create } from 'zustand'
 
 import { initStore } from '../models/initStore'
-import { computed } from '../models/computed'
-import { queries } from '../models/queries'
+import { StoreComputed, computed } from './computed'
+import { StoreQueries, queries } from './queries'
+import { StoreHeaderSetters, StoreSetters, headerSetters, setters } from './setters'
 
-export const useZustand = create<ModelStore & ReturnType<typeof computed> & ReturnType<typeof queries>>((set, get) => ({
+export const useZustand = create<ModelStore & StoreComputed & StoreQueries & StoreSetters & StoreHeaderSetters>((set, get) => ({
   ...initStore,
   ...computed(get),
-  ...queries(get)
+  ...queries(get),
+  ...setters(set, get),
+  ...headerSetters(set, get)
 }))

@@ -1,8 +1,6 @@
 import { Section } from "./Section"
-import { PeriodHeader } from "./Header.Period"
-import { DateFormatContext } from "./Period"
-import { PeriodFeatures } from "./PeriodFeatures"
-import { HeaderLevelContext } from "./Header"
+import { DateFormatContext } from "./items/Period"
+import { PeriodFeatures } from "./items/Period.Features"
 import { useZustand } from "../hooks/useZustand"
 
 

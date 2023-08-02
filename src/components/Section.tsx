@@ -1,5 +1,5 @@
-import { SectionHeader } from "./Header.Section"
-import { HeaderLevelContext } from "./Header"
+import { SectionHeader } from "./headers/Header.Section"
+import { HeaderLevelContext } from "./headers/Header"
 
 
 export function Section<TProps extends Model>({ id, title, items, Component }: Model & Section<TProps> & { Component: ({...props}: TProps & React.Attributes) => JSX.Element}) {

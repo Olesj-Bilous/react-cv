@@ -1,8 +1,5 @@
 
 
-export type StoredModel<K extends keyof ModelStore> = ModelStore[K] extends ModelMap<infer M> ? M
- : never
-
 export const queries = <T extends ModelStore>(get: () => T) => ({
   getModel<K extends keyof ModelStore>(type: K, id: string) {
     return get()[type].models[id] as ModelType<StoredModel<K>>
@@ -32,7 +29,7 @@ export const queries = <T extends ModelStore>(get: () => T) => ({
       }
     }
   },
-  getPeriodDateString(settings:{locales: Intl.LocalesArgument,present:string}, formatOptions: Intl.ListFormatOptions, id: string) {
+  getPeriodDateString(settings:{locales: Intl.LocalesArgument,present:string}, formatOptions: Intl.DateTimeFormatOptions, id: string) {
     const { startDate, endDate, toPresent } = this.getModel('periods', id)
 
     const end = (toPresent && settings.present)
@@ -41,3 +38,5 @@ export const queries = <T extends ModelStore>(get: () => T) => ({
     return `${startDate.toLocaleDateString(settings.locales, formatOptions)}${end ? ` - ${end}` : '' }`
   }
 })
+
+export type StoreQueries = ReturnType<typeof queries>

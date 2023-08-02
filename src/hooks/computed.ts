@@ -1,6 +1,6 @@
 import { filterMap, mapMap, mapToArray } from '../utils/mapQueries'
 import { ProfileSections } from '../components/Profile'
-import { eventsMapToSectionArray } from './eventsMapToSectionArray'
+import { eventsMapToSectionArray } from '../models/eventsMapToSectionArray'
 
 export const computed = <T extends ModelStore>(get: () => T) => ({
   getSelectedProfile() {
@@ -14,7 +14,7 @@ export const computed = <T extends ModelStore>(get: () => T) => ({
     const mainTitles = ['Experience', 'Projects']
     return filterMap(this.getSelectedEras(), era => mainTitles.some(title => title === era.title))
   },
-  getMainPeriods() {
+  getMainPeriods(): SectionArray<FeaturedPeriod> {
     const sections = eventsMapToSectionArray<Period>(
       get().periods.models,
       this.getMainEraFilter()[0],
@@ -56,3 +56,5 @@ export const computed = <T extends ModelStore>(get: () => T) => ({
     return profileSections as ProfileSections
   }
 })
+
+export type StoreComputed = ReturnType<typeof computed>

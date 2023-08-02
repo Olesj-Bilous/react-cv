@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
-import { isUrl, isEmailAddress, isPhoneNumber } from "../utils/stringChecks";
+import { isUrl, isEmailAddress, isPhoneNumber } from "../../utils/stringChecks";
 
 const icons: {
   [key: string]: IconDefinition

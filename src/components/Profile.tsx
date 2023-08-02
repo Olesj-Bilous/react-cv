@@ -1,8 +1,8 @@
 import { useZustand } from "../hooks/useZustand"
-import { IconicItem } from "./IconicItem"
-import { DateFormatContext } from "./Period"
-import { PeriodHeader } from "./Header.Period"
-import { RatedSkill } from "./RatedSkill"
+import { IconicItem } from "./items/IconicItem"
+import { DateFormatContext } from "./items/Period"
+import { PeriodHeaderControl } from "./headers/Header.Period"
+import { RatedSkill } from "./items/RatedSkill"
 import { Section } from "./Section"
 
 
@@ -15,7 +15,7 @@ export interface ProfileSections {
 const components = {
   iconicItems: IconicItem,
   ratedSkills: RatedSkill,
-  periods: PeriodHeader
+  periods: PeriodHeaderControl
 }
 
 export function Profile() {

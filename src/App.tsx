@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import './App.css'
 
-import { Header, HeaderLevelContext } from './components/Header'
 import { useZustand } from './hooks/useZustand'
 
 import { Profile } from './components/Profile'
-import { DateSettingsContext } from './components/Period'
+import { DateSettingsContext } from './components/items/Period'
 import { Main } from './components/Main'
-import { ProfileHeader } from './components/Header.Profile'
+import { ProfileHeaderControl } from './components/headers/Header.Profile'
+import { EditPermissionContext } from './contexts/EditContext'
 
 function App() {
   const {
@@ -22,12 +22,14 @@ function App() {
 
   return (
     <DateSettingsContext.Provider value={dateSettings}>
-      <ProfileHeader {...{
-        id,
-        img
-      }} />
-      <Profile />
-      <Main />
+      <EditPermissionContext.Provider value={{allowEdit:true}}>
+        <ProfileHeaderControl {...{
+          id,
+          img
+        }} />
+        <Profile />
+        <Main />
+      </EditPermissionContext.Provider>
     </DateSettingsContext.Provider>
   )
 }
