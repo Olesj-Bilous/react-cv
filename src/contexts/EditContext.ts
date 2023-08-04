@@ -1,6 +1,12 @@
 import { createContext } from "react";
 import { contextFactory } from "./contextFactory";
 
-export const { Context: EditPermissionContext, hook: useEditPermissionContext } = contextFactory <{ allowEdit: boolean }>('EditPermission', 'edit')
+export const [ EditPermissionContext, useEditPermissionContext ] = contextFactory <{ allowEdit: boolean }>('EditPermission', 'allowEdit')
 
-export const {Context: EditToggleContext, hook: useEditToggleContext} = contextFactory<{editToggled: boolean}>('EditToggle', 'editToggled')
+export const [EditToggleContext, useEditToggleContext] = contextFactory<{
+  editToggled: boolean
+  toggleEdit: (value: boolean) => void
+  isTouched: boolean
+  revert: () => void
+  save: () => void
+}>('EditToggle', 'editToggled')

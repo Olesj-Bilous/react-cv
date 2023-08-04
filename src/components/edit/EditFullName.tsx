@@ -1,6 +1,6 @@
 import {memo} from 'react'
 import { DisplayText, EditText } from "./EditText"
-import { editTogglerFactory } from '../factories/editFactory'
+import { editTogglerFactory } from '../factories/editFactories'
 
 export function EditFullName({ firstName, lastName }: EditValuePropsMap<Model & FullName>) {
   return (
@@ -10,6 +10,5 @@ export function EditFullName({ firstName, lastName }: EditValuePropsMap<Model & 
     </>
   )
 }
-
 
 export const EditFullNameToggle = memo(editTogglerFactory(EditFullName, DisplayText))

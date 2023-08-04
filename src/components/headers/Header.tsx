@@ -1,31 +1,43 @@
 import { useZustand } from '../../hooks/useZustand'
 import { createElement, createContext, useContext, memo, FC } from 'react'
 import { EditFullName } from '../edit/EditFullName'
-import { EditText, EditTextToggle, EditTextarea, EditTextareaToggle } from '../edit/EditText'
+import { DisplayText, EditText, EditTextToggle, EditTextarea, EditTextareaToggle } from '../edit/EditText'
 import { contextFactory } from '../../contexts/contextFactory'
 
-export const { Context: HeaderLevelContext, hook: useHeaderLevelContext } = contextFactory<{ level: 1 | 2 | 3 | 4 }>('HeaderLevel', 'level')
+export const [ HeaderLevelContext, useHeaderLevelContext ] = contextFactory<{ level: 1 | 2 | 3 | 4 }>('HeaderLevel', 'level')
 
-export const Hn = memo(({ n, children }: { n: 1 | 2 | 3 | 4 | 5, children?: React.ReactNode } & React.Attributes) => createElement(`h${n}`, null, children))
+export const Hn = memo(({ n, children }: {
+  n:
+  1 | 2 | 3 | 4 | 5, children?: React.ReactNode
+} & React.Attributes) => createElement(`h${n}`, null, children))
 
-export function headerFactory<T extends {}, S extends {}, I extends {}>(
+export function headerFactory<T extends {}, S extends {}, I extends {}, P extends {}, E extends {}>({
+  Title, Subtitle, Introduction, Prelude, Epilogue
+}:{
   Title: FC<T>,
   Subtitle: FC<S>,
-  Introduction: FC<I>
-) {
-  return function Header({ title, subtitle, introduction }: {
+  Introduction: FC<I>,
+  Prelude?: FC<P>,
+  Epilogue?: FC<E>
+}) {
+
+  return function Header({ title, subtitle, introduction, prelude, epilogue }: {
     title: T
     subtitle?: S
     introduction?: I
+    prelude?: P
+    epilogue?: E
   }) {
     const { level } = useHeaderLevelContext()
 
     return (
       <header>
         <div className="head">
+          {
+            prelude && Prelude && <Prelude {...prelude} />
+          }
           <div className="title">
             <Hn n={level}>
-              
               <Title {...title} />
             </Hn>
             {
@@ -36,6 +48,9 @@ export function headerFactory<T extends {}, S extends {}, I extends {}>(
               )
             }
           </div>
+          {
+            epilogue && Epilogue && <Epilogue {...epilogue} />
+          }
         </div>
         {
           introduction && (
@@ -49,4 +64,8 @@ export function headerFactory<T extends {}, S extends {}, I extends {}>(
   }
 }
 
-export const Header = headerFactory(EditTextToggle, EditTextToggle, EditTextToggle)
+export const Header = headerFactory({
+  Title: DisplayText,
+  Subtitle: DisplayText,
+  Introduction: DisplayText
+})
