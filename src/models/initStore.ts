@@ -10,10 +10,12 @@ export const initStore: ModelStore = {
         era: '0',
         order: 0
       }
-    }
+    },
+    count: 1
   },
   ratedSkills: {
-    models: {}
+    models: {},
+    count: 0
   },
   periods: {
     models: {
@@ -36,7 +38,8 @@ export const initStore: ModelStore = {
         era: '2',
         order: 1
       }
-    }
+    },
+    count: 2
   },
   periodFeatures: {
     models: {
@@ -58,7 +61,8 @@ export const initStore: ModelStore = {
         feature: 'I seen da sun rise at dawn and seen it settin over yon',
         period: '0'
       }
-    }
+    },
+    count: 3
   },
   eras: {
     models: {
@@ -80,7 +84,8 @@ export const initStore: ModelStore = {
         profile: '0',
         order: 2
       }
-    }
+    },
+    count: 3
   },
   profiles: {
     models: {
@@ -92,6 +97,7 @@ export const initStore: ModelStore = {
         description: 'Been leadin\' them cows to pasture ever since I was a kid, and ain\'t none of em ever complained',
         img: 'john-wayne.webp'
       }
-    }
+    },
+    count: 1
   }
 }

@@ -1,4 +1,4 @@
-import { editTogglerFactory, editorFactory } from "../factories/editFactories";
+import { editToggleFactory, editorFactory, simpleEditToggleFactory } from "../factories/editFactories";
 import { memo} from 'react'
 import { DisplayText } from "./EditText";
 
@@ -14,10 +14,10 @@ export function EditPeriod({ startDate, endDate, toPresent }: EditValuePropsMap<
   return (
     <>
       <EditDate {...startDate} />
-      <EditDate {...endDate} />
+      <EditDate disabled={toPresent.value} {...endDate} />
       <EditBoolean {...toPresent} />
     </>
   )
 }
 
-export const EditPeriodToggle = editTogglerFactory(EditPeriod, DisplayText)
+export const EditPeriodToggle = simpleEditToggleFactory(EditPeriod, DisplayText)

@@ -1,11 +1,11 @@
 import { useState , useCallback, useMemo, createElement, memo} from "react";
-import { headerFactory, HeaderLevelContext } from "./Header";
-import { EditToggleContext, useEditPermissionContext } from "../../contexts/EditContext";
-import { useLocalEditor } from "../../hooks/useLocalEditor"; 
+import { headerFactory, HeaderLevelContext } from "./Header.factory";
+import { EditableContext, useEditPermissionContext } from "../../contexts/EditContext";
+import { useModelEditor } from "../../hooks/useModelEditor"; 
 import { useZustand } from "../../hooks/useZustand";
 import { EditText, EditTextToggle, EditTextarea, EditTextareaToggle } from "../edit/EditText";
 import { EditFullName, EditFullNameToggle } from "../edit/EditFullName";
-import { EditControl, Editable } from "../edit/EditControl";
+import { Editable } from "../edit/Editable";
 
 const ProfileHeader = memo(headerFactory({
   Title: EditFullNameToggle,
@@ -13,38 +13,32 @@ const ProfileHeader = memo(headerFactory({
   Introduction: EditTextareaToggle
 }))
 
-export function ProfileHeaderControl({ id }: Model & { img: string }) {
-  const {title, subtitle, introduction} = useZustand(store => store.getHeaderProps('profiles', id))
+export function EditProfileHeader({ id }: Model & { img: string }) {
+  const { title, subtitle, introduction } = useZustand(store => store.getHeaderProps('profiles', id))
 
   const profileSetter = useZustand(store => store.profileSetter(id))
   const {
     control,
     content: { firstName, lastName, profession, description }
-  } = useLocalEditor({ modelSetter: profileSetter })
+  } = useModelEditor({ modelSetter: profileSetter })
 
   return (
     <Editable {...control}>
       <HeaderLevelContext.Provider value={{ level: 1 }} >
         <ProfileHeader {...{
           title: {
-            display: {
-              display: title
-            },
+            display: title,
             edit: {
               firstName,
               lastName
             }
           },
           subtitle: {
-            display: {
-              display: subtitle
-            },
+            display: subtitle,
             edit: profession
           },
           introduction: {
-            display: {
-              display: introduction
-            },
+            display: introduction,
             edit: description
           }
         }} />

@@ -2,10 +2,17 @@ import { useState, useCallback, useMemo } from "react"
 import { shallowCompare } from "../utils/objectChecks"
 import { useEditPermissionContext } from "../contexts/EditContext"
 
-export function useLocalEditor<T extends Model, X extends string = ''>(
-  { modelSetter: [globalModel, setGlobalModel] }: { modelSetter: ModelSetter<T, X> }
-) {
-  const [editToggled, toggleEdit] = useState(false)
+export function useModelEditor<T extends Model, X extends '' | keyof T = ''>(
+  { modelSetter: [globalModel, setGlobalModel], toggled }: {
+    modelSetter: ModelSetter<T, X>
+    toggled?: boolean
+  }
+): {
+  content: EditValuePropsMap<T, X>
+  keys: (keyof T)[]
+  control: EditControl
+} {
+  const [editToggled, toggleEdit] = useState(toggled ?? false)
 
   const [model, setModel] = useState(globalModel)
 
@@ -15,8 +22,8 @@ export function useLocalEditor<T extends Model, X extends string = ''>(
   )
 
   const save = useCallback(
-    () => setGlobalModel(model),
-    [setGlobalModel, model]
+    () => { setGlobalModel(model); toggleEdit(!editToggled)},
+    [setGlobalModel, model, editToggled]
   )
 
   const isTouched = useMemo(

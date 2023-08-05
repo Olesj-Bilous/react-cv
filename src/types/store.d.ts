@@ -17,6 +17,7 @@ type ModelType<TModel extends Model> = {
 
 interface ModelMap<TModel extends Model> {
   models: KeyMap<ModelType<TModel>>
+  count: number
 }
 
 interface ModelStore {
@@ -32,13 +33,11 @@ type StoredModel<K extends keyof ModelStore> = ModelStore[K] extends ModelMap<in
 
 type setZustand<T> = (partial: Partial<T> | ((state: T) => Partial<T>), replace?: boolean) => void
 
-type SetModel<T extends Model, X extends string = ''> = Omit<ModelType<T>, 'id' | X>
+type SetModel<T extends Model, X extends '' | keyof T = ''> = Omit<ModelType<T>, 'id' | X>
 
-type ChainableConditionalConservativeConversion<S, T, U> = S extends T ? U : S extends undefined ? undefined : S
+type DateToStringConversion<S> = S extends Date ? string : S
 
-type DateToStringConversion<S> = ChainableConditionalConservativeConversion<S, Date, string>
-
-type InputModel<T extends Model, X extends string = ''> = {
+type InputModel<T extends Model, X extends '' | keyof T = ''> = {
   [Key in keyof SetModel<T, X>]: DateToStringConversion<SetModel<T, X>[Key]>
 }
 
@@ -48,7 +47,7 @@ type DefinedModel<T> = {
   [Key in keyof T]-?: DefinedValue<T[Key]>
 }
 
-type ModelSetter<T extends Model, X extends string = ''> = [
+type ModelSetter<T extends Model, X extends '' | keyof T = ''> = [
   model: DefinedModel<InputModel<T, X>>,
   hook: (partial: Partial<InputModel<T, X>>) => void
 ]
@@ -58,6 +57,23 @@ type EditValueProps<T> = {
   set: (value: T) => void
 }
 
-type EditValuePropsMap<T extends Model, X extends string = ''> = {
+type EditValuePropsMap<T extends Model, X extends '' | keyof T = ''> = {
   [Key in keyof DefinedModel<InputModel<T, X>>]: EditValueProps<DefinedModel<InputModel<T, X>>[Key]>
+}
+
+type EditToggleProp<D, E = D, X extends '' | keyof E = ''> = {
+  display: D
+  edit: [E] extends [Model] ? EditValuePropsMap<E, X> : EditValueProps<DefinedValue<E>>
+}
+
+type EditToggleMap<T extends Model, X extends '' | keyof T = ''> = {
+  [Key in keyof InputModel<T, X>]: EditToggleProp<InputModel<T, X>[Key]>
+}
+ 
+interface EditControl {
+  editToggled: boolean
+  toggleEdit: (value: boolean) => void
+  revert: () => void
+  save: () => void
+  isTouched: boolean
 }

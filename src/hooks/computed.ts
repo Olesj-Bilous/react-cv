@@ -15,10 +15,13 @@ export const computed = <T extends ModelStore>(get: () => T) => ({
     return filterMap(this.getSelectedEras(), era => mainTitles.some(title => title === era.title))
   },
   getMainPeriods(): SectionArray<FeaturedPeriod> {
+    const models = get().periods.models
+    const filter = this.getMainEraFilter()[0]
+    const profile = this.getSelectedProfile()
     const sections = eventsMapToSectionArray<Period>(
-      get().periods.models,
-      this.getMainEraFilter()[0],
-      this.getSelectedProfile()
+      models,
+      filter,
+      profile
     )
     return sections.map(section => ({
       ...section,

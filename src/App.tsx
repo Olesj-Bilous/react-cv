@@ -6,7 +6,7 @@ import { useZustand } from './hooks/useZustand'
 import { Profile } from './components/Profile'
 import { DateSettingsContext } from './components/items/Period'
 import { Main } from './components/Main'
-import { ProfileHeaderControl } from './components/headers/Header.Profile'
+import { EditProfileHeader } from './components/headers/Header.Profile.Edit'
 import { EditPermissionContext } from './contexts/EditContext'
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
   return (
     <DateSettingsContext.Provider value={dateSettings}>
       <EditPermissionContext.Provider value={{allowEdit:true}}>
-        <ProfileHeaderControl {...{
+        <EditProfileHeader {...{
           id,
           img
         }} />

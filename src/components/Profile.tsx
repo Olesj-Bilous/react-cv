@@ -1,7 +1,7 @@
 import { useZustand } from "../hooks/useZustand"
 import { IconicItem } from "./items/IconicItem"
 import { DateFormatContext } from "./items/Period"
-import { PeriodHeaderControl } from "./headers/Header.Period"
+import { EditPeriodHeader } from "./headers/Header.Period.Edit"
 import { RatedSkill } from "./items/RatedSkill"
 import { Section } from "./Section"
 
@@ -15,14 +15,14 @@ export interface ProfileSections {
 const components = {
   iconicItems: IconicItem,
   ratedSkills: RatedSkill,
-  periods: PeriodHeaderControl
+  periods: EditPeriodHeader
 }
 
 export function Profile() {
   const profileSections = useZustand(store => store.getProfileSections())
   const { iconicItems, periods, ratedSkills } = profileSections
 
-  let content: JSX.Element[] = []
+  const content: JSX.Element[] = []
   const counters = {
     iconicItems: 0,
     periods: 0,
@@ -63,6 +63,7 @@ export function Profile() {
       content.push(
         <Section<IconicItem | RatedSkill | Period> {...{
           key: `${key}/${i}`,
+          itemKey: key,
           Component,
           ...props
         }} />

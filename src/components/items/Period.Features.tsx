@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { PeriodHeaderControl } from "../headers/Header.Period";
+import { EditPeriodHeader} from "../headers/Header.Period.Edit";
 
 
 export const EditPeriodContext = createContext<null | {
@@ -14,7 +14,7 @@ export function PeriodFeatures({ features, ...props }: Period & { features: Peri
 
   return (
     <article>
-      <PeriodHeaderControl {...props} />
+      <EditPeriodHeader id={props.id} />
       <ul>
         {
           features.map((feature) => (

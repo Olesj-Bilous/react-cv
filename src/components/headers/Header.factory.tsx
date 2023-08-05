@@ -1,14 +1,11 @@
-import { useZustand } from '../../hooks/useZustand'
-import { createElement, createContext, useContext, memo, FC } from 'react'
-import { EditFullName } from '../edit/EditFullName'
-import { DisplayText, EditText, EditTextToggle, EditTextarea, EditTextareaToggle } from '../edit/EditText'
+import { createElement, memo, FC } from 'react'
 import { contextFactory } from '../../contexts/contextFactory'
 
 export const [ HeaderLevelContext, useHeaderLevelContext ] = contextFactory<{ level: 1 | 2 | 3 | 4 }>('HeaderLevel', 'level')
 
 export const Hn = memo(({ n, children }: {
-  n:
-  1 | 2 | 3 | 4 | 5, children?: React.ReactNode
+  n: 1 | 2 | 3 | 4 | 5,
+  children?: React.ReactNode
 } & React.Attributes) => createElement(`h${n}`, null, children))
 
 export function headerFactory<T extends {}, S extends {}, I extends {}, P extends {}, E extends {}>({
@@ -20,7 +17,6 @@ export function headerFactory<T extends {}, S extends {}, I extends {}, P extend
   Prelude?: FC<P>,
   Epilogue?: FC<E>
 }) {
-
   return function Header({ title, subtitle, introduction, prelude, epilogue }: {
     title: T
     subtitle?: S
@@ -63,9 +59,3 @@ export function headerFactory<T extends {}, S extends {}, I extends {}, P extend
     )
   }
 }
-
-export const Header = headerFactory({
-  Title: DisplayText,
-  Subtitle: DisplayText,
-  Introduction: DisplayText
-})

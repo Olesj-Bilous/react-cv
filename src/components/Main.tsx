@@ -19,6 +19,7 @@ export function Main() {
           {
             sections.map((section, i) => <Section {...{
               key: i,
+              itemKey: 'periods',
               ...section,
               Component: PeriodFeatures
             }} />)
