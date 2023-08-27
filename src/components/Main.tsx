@@ -2,6 +2,7 @@ import { Section } from "./Section"
 import { DateFormatContext } from "./items/Period"
 import { PeriodFeatures } from "./items/Period.Features"
 import { useZustand } from "../hooks/useZustand"
+import { AddPeriodHeader } from "./headers/Header.Period.Add"
 
 
 export interface MainProps {
@@ -21,7 +22,8 @@ export function Main() {
               key: i,
               itemKey: 'periods',
               ...section,
-              Component: PeriodFeatures
+              Component: PeriodFeatures,
+              AddComponent: AddPeriodHeader
             }} />)
           }
       </DateFormatContext.Provider>

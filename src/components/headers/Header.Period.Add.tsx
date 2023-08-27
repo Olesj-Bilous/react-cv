@@ -11,7 +11,7 @@ import { headerFactory, HeaderLevelContext } from "./Header.factory";
 import { PeriodHeaderControl } from "./Header.Period.Control";
 
 export function AddPeriodHeader({ eraId }: { eraId: string }) {
-  const setter = useZustand(store => store.periodAdder(eraId))
+  const setter = useZustand(store => store.addPeriod(eraId))
   const {
     control,
     content: {

@@ -23,8 +23,11 @@ export const ToggleEditButton = memo(
 export const EditControl = memo(
   ({ create, hide }: { create?: boolean, hide?: () => void }) => {
     const { editToggled, toggleEdit, isTouched, save, revert } = useEditableContext()
+
     const cancelText = create ? 'preview' : 'cancel'
     const revertText = create ? 'clear' : 'revert'
+    const saveAction = create ? () => { save(); revert(); hide && hide() } : save
+    
     return (
       <div>
         <button onClick={() => toggleEdit(!editToggled)}>
@@ -32,7 +35,7 @@ export const EditControl = memo(
         </button>
         {
           editToggled && <>
-            <button disabled={!create && !isTouched} onClick={save}>
+            <button disabled={!create && !isTouched} onClick={saveAction}>
               save
             </button>
             <button disabled={!isTouched} onClick={revert}>

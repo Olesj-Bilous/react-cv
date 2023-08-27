@@ -1,21 +1,22 @@
 import { useZustand } from "../hooks/useZustand"
-import { IconicItem } from "./items/IconicItem"
+import { EditIconicItem, AddIconicItem, IconicItemControl } from "./items/IconicItem"
 import { DateFormatContext } from "./items/Period"
 import { EditPeriodHeader } from "./headers/Header.Period.Edit"
-import { RatedSkill } from "./items/RatedSkill"
+import { AddPeriodHeader } from "./headers/Header.Period.Add"
+import { EditRatedSkill, AddRatedSkill } from "./items/RatedSkill"
 import { Section } from "./Section"
 
 
 export interface ProfileSections {
-  iconicItems: SectionArray<IconicItem>
-  ratedSkills: SectionArray<RatedSkill>
-  periods: SectionArray<Period>
+  iconicItems: SectionArray<Model>
+  ratedSkills: SectionArray<Model>
+  periods: SectionArray<Model>
 }
 
 const components = {
-  iconicItems: IconicItem,
-  ratedSkills: RatedSkill,
-  periods: EditPeriodHeader
+  iconicItems: [ EditIconicItem, AddIconicItem ] as [React.FC<Model>, React.FC<{eraId:string}>],
+  ratedSkills: [EditRatedSkill, AddRatedSkill] as [React.FC<Model>, React.FC<{ eraId: string }>],
+  periods: [EditPeriodHeader, AddPeriodHeader] as [React.FC<Model>, React.FC<{ eraId: string }>]
 }
 
 export function Profile() {
@@ -46,25 +47,18 @@ export function Profile() {
       (previous, current) => current.item < previous.item
         ? current : previous
     ).key
-      // casting Component to 
-      //  a function accepting a union of parameters 
-      //  rather than a union of functions,
-      //   each of which accept different parameters,
-      //  avoids code duplication by pseudogenerising Component
-      //  but introduces the danger of calling Component with the wrong parameters type
-      // we ensure that only the right type of parameters are passed to Component by retrieving them from sections by key
-      //  unfortunately, TypeScript does not recognise this
+    
     const sections = profileSections[key]
-    const Component = components[key] as ({ ...props }: (IconicItem | RatedSkill | Period) & React.Attributes) => JSX.Element
+    const [Component, AddComponent] = components[key]
 
     const i = counters[key]++
     const props = sections[i]
     if (props)
       content.push(
-        <Section<IconicItem | RatedSkill | Period> {...{
+        <Section {...{
           key: `${key}/${i}`,
-          itemKey: key,
           Component,
+          AddComponent,
           ...props
         }} />
       )

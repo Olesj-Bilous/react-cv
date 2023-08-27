@@ -15,6 +15,7 @@
 
     /* Linting */
     "strict": true,
+	"noUncheckedIndexedAccess": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["./src/**/*", "./src/types/**/*"],

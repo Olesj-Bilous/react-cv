@@ -3,32 +3,35 @@ import { dateToInput, inputToDate } from "../utils/converters";
 
 export type PeriodSetter = ModelSetter<Period, 'era' | 'order' | 'title'>
 
-export const setters = <T extends ModelStore & StoreQueries>(set: setZustand<ModelStore>, get: () => T) => ({
-  setHook<K extends keyof ModelStore, X extends '' | keyof StoredModel<K> = ''>(modelType: K) {
-    return (id: string) => (partial: Partial<SetModel<StoredModel<K>, X>>) => set(store => ({
-      [modelType]: {
-        ...store[modelType],
-        models: {
-          ...store[modelType].models,
-          [id]: {
-            //@ts-ignore
-            id,
-            ...store[modelType].models[id],
-            ...partial
+export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & StoreQueries) => ({
+  setModel<K extends keyof ModelStore, X extends '' | keyof StoredModel<K> = ''>(modelType: K) {
+    return (id: string) => (partial: Partial<SetModel<StoredModel<K>, X>>) => {
+      const intId = parseInt(id)
+      set(store => ({
+        [modelType]: {
+          ...store[modelType],
+          count: store[modelType].count < intId ? intId : store[modelType].count,
+          models: {
+            ...store[modelType].models,
+            [id]: {
+              id,
+              ...store[modelType].models[id],
+              ...partial
+            }
           }
         }
-      }
-    }))
+      }))
+    }
   },
   profileSetter(id: string): ModelSetter<Profile> {
     const { firstName, lastName, profession, description, img } = get().getModel('profiles', id)
     return [
       { firstName, lastName, profession, description, img },
-      this.setHook('profiles')(id)
+      this.setModel('profiles')(id)
     ]
   },
   periodSetter(id: string): ModelSetter<Period, 'order' | 'era'> {
-    const hook = this.setHook<'periods', 'order' | 'era'>('periods')(id)
+    const hook = this.setModel<'periods', 'order' | 'era'>('periods')(id)
     const { startDate, endDate, toPresent, title, subtitle, introduction } = get().getModel('periods', id)
     return [
       {
@@ -46,13 +49,44 @@ export const setters = <T extends ModelStore & StoreQueries>(set: setZustand<Mod
       })
     ]
   },
-  periodAdder(eraId: string): ModelSetter<Period, 'order' | 'era'> {
-    const count = get().periods.count++
-    const hook = this.setHook('periods')(count.toString())
+  addModel<K extends keyof ModelStore, X extends '' | keyof StoredModel<K> = ''>(modelType: K, increment?: number) {
+    const count = get()[modelType].count + (increment ?? 1)
+    const hook = this.setModel<K, X>(modelType)(count.toString())
+    return hook
+  },
+  addEraEvent<K extends 'periods' | 'ratedSkills' | 'iconicItems', X extends '' | keyof StoredModel<K> = ''>(eventType: K, eraId: string) {
+    return (partial: Partial<SetModel<StoredModel<K>, X>>) => this.addModel<K, X>(eventType)({
+      ...partial,
+      era: eraId
+    })
+  },
+  iconicItemAdder(eraId: string): ModelSetter<IconicItem, 'order' | 'era'> {
+    const hook = this.addEraEvent<'iconicItems', 'order' | 'era'>('iconicItems', eraId)
     return [
       {
-        startDate: dateToInput(new Date()),
-        endDate: dateToInput(new Date()),
+        icon: '',
+        item: ''
+      },
+      hook
+    ]
+  },
+  ratedSkillAdder(eraId: string): ModelSetter<RatedSkill, 'order' | 'era'> {
+    const hook = this.addEraEvent<'ratedSkills', 'order' | 'era'>('ratedSkills', eraId)
+    return [
+      {
+        skill: '',
+        rating: 0
+      },
+      hook
+    ]
+  },
+  addPeriod(eraId: string): ModelSetter<Period, 'order' | 'era'> {
+    const hook = this.addModel('periods')
+    const [startDate, endDate] = [dateToInput(new Date()), dateToInput(new Date())]
+    return [
+      {
+        startDate,
+        endDate,
         toPresent: false,
         title: '',
         subtitle: '',
@@ -62,14 +96,13 @@ export const setters = <T extends ModelStore & StoreQueries>(set: setZustand<Mod
         ...partial,
         startDate: inputToDate(partial.startDate),
         endDate: inputToDate(partial.endDate),
-        era: eraId,
-        order: count
+        era: eraId
       })
     ]
   },
   eraTitleSetter(id: string): EditValueProps<string> {
     const { title } = get().getModel('eras', id)
-    const hook = this.setHook('eras')(id)
+    const hook = this.setModel('eras')(id)
     return {
       value: title,
       set: value => hook({

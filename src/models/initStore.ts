@@ -14,7 +14,15 @@ export const initStore: ModelStore = {
     count: 1
   },
   ratedSkills: {
-    models: {},
+    models: {
+      0: {
+        id: '0',
+        skill: 'Texan',
+        rating: 1,
+        era: '3',
+        order: 0
+      }
+    },
     count: 0
   },
   periods: {
@@ -83,6 +91,12 @@ export const initStore: ModelStore = {
         title: 'Education',
         profile: '0',
         order: 2
+      },
+      3: {
+        id: '3',
+        title: 'Languages',
+        profile: '0',
+        order: 3
       }
     },
     count: 3
