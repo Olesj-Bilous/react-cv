@@ -13,12 +13,12 @@ export function useValueEditor<T extends boolean | number | string>(
 
   const revert = useCallback(
     () => setValue(storeValue),
-    [setValue, storeValue]
+    [storeValue]
   )
 
   const save = useCallback(
     () => setStore(value),
-    [setStore, value]
+    [value]
   )
 
   const isTouched = useMemo(

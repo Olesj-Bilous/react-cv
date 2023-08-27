@@ -1,5 +1,7 @@
 import { memo, useState } from 'react'
 import { EditPermissionContext, EditableContext, useEditPermissionContext, useEditableContext } from '../../contexts/EditContext'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
 
 export const SaveButton = memo(
   () => {
@@ -20,31 +22,43 @@ export const ToggleEditButton = memo(
   }
 )
 
+const preview = icon({ name: 'eye' })
+const cancel = icon({ name: 'xmark' })
+const edit = icon({ name: 'pencil' })
+const undo = icon({ name: 'undo' })
+const saveIconDef = icon({ name: 'check' })
+
 export const EditControl = memo(
   ({ create, hide }: { create?: boolean, hide?: () => void }) => {
     const { editToggled, toggleEdit, isTouched, save, revert } = useEditableContext()
+    
+    const cancelIcon = <FontAwesomeIcon icon={cancel} />
 
-    const cancelText = create ? 'preview' : 'cancel'
-    const revertText = create ? 'clear' : 'revert'
+    const cancellationIcon = create
+      ? <FontAwesomeIcon icon={preview} />
+      : cancelIcon
+    
+    const revertIcon = <FontAwesomeIcon icon={undo} />
+
     const saveAction = create ? () => { save(); revert(); hide && hide() } : save
     
     return (
-      <div>
+      <div className="control">
         <button onClick={() => toggleEdit(!editToggled)}>
-          {editToggled ? cancelText : 'edit'}
+          {editToggled ? cancellationIcon : <FontAwesomeIcon icon={ edit } />}
         </button>
         {
           editToggled && <>
             <button disabled={!create && !isTouched} onClick={saveAction}>
-              save
+              <FontAwesomeIcon icon={saveIconDef} />
             </button>
             <button disabled={!isTouched} onClick={revert}>
-              {revertText}
+              {revertIcon}
             </button>
           </>
         }
         {
-          create && hide && <button onClick={hide}>cancel</button>
+          create && hide && <button onClick={hide}>{ cancelIcon }</button>
         }
       </div>
     )

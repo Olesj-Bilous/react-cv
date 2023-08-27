@@ -12,15 +12,17 @@ export function EditSectionHeader({ id }: Model & React.Attributes) {
   const { content, control } = useValueEditor(setTitle)
 
   return (
-    <HeaderLevelContext.Provider value={{ level: 3 }}>
-      <Editable {...control}>
-        <EditHeader {...{
-          title: {
-            display: title,
-            edit: content
-          }
-        }} />
-      </Editable>
-    </HeaderLevelContext.Provider>
+    <header>
+      <HeaderLevelContext.Provider value={{ level: 3 }}>
+        <Editable {...control}>
+          <EditHeader {...{
+            title: {
+              display: title,
+              edit: content
+            }
+          }} />
+        </Editable>
+      </HeaderLevelContext.Provider>
+    </header>
   )
 }

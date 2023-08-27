@@ -1,0 +1,8 @@
+#root section > ul, #root article > ul {
+  list-style: none;
+}
+#root .editable {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}/*# sourceMappingURL=style.css.map */

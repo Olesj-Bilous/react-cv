@@ -27,7 +27,7 @@ export function headerFactory<T extends {}, S extends {}, I extends {}, P extend
     const { level } = useHeaderLevelContext()
 
     return (
-      <header>
+      <>
         <div className="head">
           {
             prelude && Prelude && <Prelude {...prelude} />
@@ -55,7 +55,7 @@ export function headerFactory<T extends {}, S extends {}, I extends {}, P extend
             </p>
           )
         }
-      </header>
+      </>
     )
   }
 }

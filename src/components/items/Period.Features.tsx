@@ -2,19 +2,10 @@ import { createContext, useContext } from "react";
 import { EditPeriodHeader} from "../headers/Header.Period.Edit";
 
 
-export const EditPeriodContext = createContext<null | {
-  edit: boolean
-}>(null)
-
-export function PeriodFeatures({ features, ...props }: Period & { features: PeriodFeature[] } & React.Attributes) {
-  /*const editContext = useContext(EditPeriodContext)
-  if (editContext == null)
-    throw new Error('No value was provided for EditPeriodContext')
-  const { edit } = editContext*/
-
+export function PeriodFeatures({ features, id }: Period & { features: PeriodFeature[] } & React.Attributes) {
   return (
     <article>
-      <EditPeriodHeader id={props.id} />
+      <EditPeriodHeader id={id} />
       <ul>
         {
           features.map((feature) => (

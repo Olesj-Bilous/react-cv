@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import './style/style.css'
 
 import { useZustand } from './hooks/useZustand'
 

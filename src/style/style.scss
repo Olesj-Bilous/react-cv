@@ -1,0 +1,14 @@
+#root {
+	section, article {
+		> ul {
+			list-style: none;
+		}
+	}
+
+	.editable {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+}
+ 

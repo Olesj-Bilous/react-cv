@@ -23,26 +23,28 @@ export function EditProfileHeader({ id }: Model & { img: string }) {
   } = useModelEditor({ modelSetter: profileSetter })
 
   return (
-    <Editable {...control}>
-      <HeaderLevelContext.Provider value={{ level: 1 }} >
-        <ProfileHeader {...{
-          title: {
-            display: title,
-            edit: {
-              firstName,
-              lastName
+    <header>
+      <Editable {...control}>
+        <HeaderLevelContext.Provider value={{ level: 1 }} >
+          <ProfileHeader {...{
+            title: {
+              display: title,
+              edit: {
+                firstName,
+                lastName
+              }
+            },
+            subtitle: {
+              display: subtitle,
+              edit: profession
+            },
+            introduction: {
+              display: introduction,
+              edit: description
             }
-          },
-          subtitle: {
-            display: subtitle,
-            edit: profession
-          },
-          introduction: {
-            display: introduction,
-            edit: description
-          }
-        }} />
-      </HeaderLevelContext.Provider>
-    </Editable>
+          }} />
+        </HeaderLevelContext.Provider>
+      </Editable>
+    </header>
   )
 }

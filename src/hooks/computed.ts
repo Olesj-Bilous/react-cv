@@ -4,10 +4,11 @@ import { eventsMapToSectionArray } from '../models/eventsMapToSectionArray'
 
 export const computed = <T extends ModelStore>(get: () => T) => ({
   getSelectedProfile() {
-    return get().profiles.models['0']
+    const init : Profile = {id: '0', profession: '', description: '', img: '', firstName: '', lastName: ''}
+    return get().profiles.models['0'] ?? init
   },
   getSelectedEras() {
-    const [eras] = filterMap(get().eras.models, era => era.profile === this.getSelectedProfile().id)
+    const [eras] = filterMap(get().eras.models, era => era.profile === this.getSelectedProfile()?.id)
     return eras
   },
   getMainEraFilter() {

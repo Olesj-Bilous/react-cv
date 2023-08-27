@@ -18,12 +18,12 @@ export function useModelEditor<T extends Model, X extends '' | keyof T = ''>(
 
   const revert = useCallback(
     () => setModel(globalModel),
-    [setModel, globalModel]
+    [globalModel]
   )
 
   const save = useCallback(
-    () => { setGlobalModel(model); toggleEdit(!editToggled)},
-    [setGlobalModel, model, editToggled]
+    () => { setGlobalModel(model); toggleEdit(false) },
+    [model]
   )
 
   const isTouched = useMemo(
@@ -33,10 +33,11 @@ export function useModelEditor<T extends Model, X extends '' | keyof T = ''>(
 
   const setFactory = useCallback(
     (propKey: keyof InputModel<T, X>) => useCallback(
-      (value: InputModel<T, X>[typeof propKey]) => setModel(state => ({
-        ...state,
-        [propKey]: value
-      })
+      (value: InputModel<T, X>[typeof propKey]) => setModel(
+        state => ({
+          ...state,
+          [propKey]: value
+        })
       ),
       [propKey]
     ),

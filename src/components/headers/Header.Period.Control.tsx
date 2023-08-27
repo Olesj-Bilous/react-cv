@@ -20,15 +20,17 @@ export function PeriodHeaderControl({ title, subtitle, introduction, period, con
   create?: boolean
 }) {
   return (
-    <Editable {...{ ...control, create }}>
-      <HeaderLevelContext.Provider value={{ level: 4 }} >
-        <PeriodHeader {...{
-          title,
-          subtitle,
-          introduction,
-          epilogue: period
-        }} />
-      </HeaderLevelContext.Provider>
-    </Editable>
+    <header>
+      <Editable {...{ ...control, create }}>
+        <HeaderLevelContext.Provider value={{ level: 4 }} >
+          <PeriodHeader {...{
+            title,
+            subtitle,
+            introduction,
+            epilogue: period
+          }} />
+        </HeaderLevelContext.Provider>
+      </Editable>
+    </header>
   )
 }

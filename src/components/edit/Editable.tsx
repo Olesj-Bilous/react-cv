@@ -1,6 +1,8 @@
 import { memo, useState } from 'react'
 import { EditPermissionContext, EditableContext, useEditPermissionContext, useEditableContext } from '../../contexts/EditContext'
 import { EditControl } from './EditControl'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 export const Editable = memo(
   ({ children, create, editToggled, ...ctrlProps }: EditableContext & {
@@ -10,7 +12,7 @@ export const Editable = memo(
     const { allowEdit } = useEditPermissionContext()
     const [show, setShow] = useState(!create)
 
-    return <>{
+    return <div className="editable">{
       <EditableContext.Provider value={{
         editToggled: allowEdit && editToggled,
         ...ctrlProps
@@ -18,12 +20,16 @@ export const Editable = memo(
         {
           show
             ? <>
-              {children}
+              <div className="content">
+                {children}
+              </div>
               {allowEdit && <EditControl create={create} hide={() => setShow(false)} />}
             </>
-            : allowEdit && <button onClick={() => setShow(true)}>add</button>
+            : allowEdit && <button onClick={() => setShow(true)}>
+              <FontAwesomeIcon icon={icon({name: 'plus'})} />  
+            </button>
         }
       </EditableContext.Provider>
-    }</>
+    }</div>
   }
 )
