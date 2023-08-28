@@ -21,15 +21,22 @@ function App() {
     present: 'present'
   })
 
+  const [allowEdit, setEditAllowance] = useState(true)
+
   return (
     <DateSettingsContext.Provider value={dateSettings}>
-      <EditPermissionContext.Provider value={{allowEdit:true}}>
-        <EditProfileHeader {...{
-          id,
-          img
-        }} />
-        <Profile />
-        <Main />
+      <EditPermissionContext.Provider value={{ allowEdit }}>
+        <button onClick={() => setEditAllowance(!allowEdit)}>Toggle edit</button>
+        <div className="document">
+          <EditProfileHeader {...{
+            id,
+            img
+          }} />
+          <div className="profile-body">
+            <Profile />
+            <Main />
+          </div>
+        </div>
       </EditPermissionContext.Provider>
     </DateSettingsContext.Provider>
   )

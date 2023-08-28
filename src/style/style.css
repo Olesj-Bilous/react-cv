@@ -1,8 +1,52 @@
-#root section > ul, #root article > ul {
+#root .document {
+  height: 297mm;
+  width: 210mm;
+  background-color: #2a2a2a;
+  padding: 0.6rem 1.2rem;
+}
+#root .document button {
+  padding: 0;
+  background-color: inherit;
+}
+#root .document section > ul, #root .document article > ul {
   list-style: none;
 }
-#root .editable {
+#root .document h1, #root .document h2, #root .document h3, #root .document h4, #root .document h5, #root .document ul {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  padding-inline-start: 0;
+}
+#root .document .editable {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+}
+#root .document .editable .content {
+  flex-grow: 1;
+}
+#root .document .editable .control {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+#root .document .profile-body {
+  display: flex;
+  flex-direction: row;
+  gap: 1.4rem;
+}
+#root .document .profile-body main {
+  flex-grow: 2;
+}
+#root .document .profile-body .profile {
+  flex-grow: 1;
+}
+#root .document .iconic, #root .document .rated-skill, #root .document .period > .head {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+#root .document .period > .head {
+  align-items: center;
 }/*# sourceMappingURL=style.css.map */

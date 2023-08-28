@@ -54,13 +54,20 @@ export function displayPeriodFromInput(
   })
 }
 
-export function displayPeriod(settings: { locales: Intl.LocalesArgument, present: string }, formatOptions: Intl.DateTimeFormatOptions, period: PeriodProps) {
+export function dateToString(date: Date, locales: Intl.LocalesArgument, formatOptions: Intl.DateTimeFormatOptions) {
+  if (formatOptions.dateStyle === 'short') {
+    return `${date.getMonth()}/'${date.getFullYear().toString().slice(2)}`
+  }
+  return date.toLocaleDateString(locales, formatOptions)
+}
+
+export function displayPeriod({locales, present}: { locales: Intl.LocalesArgument, present: string }, formatOptions: Intl.DateTimeFormatOptions, period: PeriodProps) {
   const { startDate, endDate, toPresent } = period
 
-  const end = (toPresent && settings.present)
-    || (endDate && endDate.toLocaleDateString(settings.locales, formatOptions))
+  const end = (toPresent && present)
+    || (endDate && dateToString(endDate, locales, formatOptions))
 
-  return `${startDate.toLocaleDateString(settings.locales, formatOptions)}${end ? ` - ${end}` : ''}`
+  return `${dateToString(startDate, locales, formatOptions)}${end ? ` - ${end}` : ''}`
 }
 
 export type StoreQueries = ReturnType<typeof queries>

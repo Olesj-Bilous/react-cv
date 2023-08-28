@@ -87,12 +87,14 @@ export function IconicItemControl({ icon, item, control, create }: {
   create?: boolean
 }) {
   return (
-    <Editable {...{...control, create}}>
-      <div className="icon-ctn">
-        <EditIconToggle {...icon} />
-      </div>
-      <div className="content">
-        <EditContactToggle {...item} />
+    <Editable {...{ ...control, create }}>
+      <div className="iconic">
+        <div className="icon-ctn">
+          <EditIconToggle {...icon} />
+        </div>
+        <div className="item">
+          <EditContactToggle {...item} />
+        </div>
       </div>
     </Editable>
   );

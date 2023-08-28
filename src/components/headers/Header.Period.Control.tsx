@@ -23,12 +23,14 @@ export function PeriodHeaderControl({ title, subtitle, introduction, period, con
     <header>
       <Editable {...{ ...control, create }}>
         <HeaderLevelContext.Provider value={{ level: 4 }} >
-          <PeriodHeader {...{
-            title,
-            subtitle,
-            introduction,
-            epilogue: period
-          }} />
+          <div className="period">
+            <PeriodHeader {...{
+              title,
+              subtitle,
+              introduction,
+              epilogue: period
+            }} />
+          </div>
         </HeaderLevelContext.Provider>
       </Editable>
     </header>

@@ -79,11 +79,13 @@ export function RatedSkillControl({ rating, skill, control, create }: {
 }) {
   return (
     <Editable {...{ ...control, create }}>
-      <div className="skill">
-        <EditTextToggle {...skill} />
-      </div>
-      <div className="rating">
-        <EditRatingToggle {...rating} />
+      <div className="rated-skill">
+        <div className="skill">
+          <EditTextToggle {...skill} />
+        </div>
+        <div className="rating">
+          <EditRatingToggle {...rating} />
+        </div>
       </div>
     </Editable>
   )
