@@ -4,19 +4,22 @@
   background-color: #2a2a2a;
   padding: 0.6rem 1.2rem;
 }
+#root .document section > ul {
+  list-style: none;
+  padding-inline-start: 0;
+}
+#root .document article > ul {
+  list-style: disc;
+}
 #root .document button {
   padding: 0;
   background-color: inherit;
 }
-#root .document section > ul, #root .document article > ul {
-  list-style: none;
-}
-#root .document h1, #root .document h2, #root .document h3, #root .document h4, #root .document h5, #root .document ul {
+#root .document h1, #root .document h2, #root .document h3, #root .document h4, #root .document h5, #root .document ul, #root .document p {
   margin-block-start: 0;
   margin-block-end: 0;
   margin-inline-start: 0;
   margin-inline-end: 0;
-  padding-inline-start: 0;
 }
 #root .document .editable {
   display: flex;
@@ -45,6 +48,15 @@
 #root .document .iconic, #root .document .rated-skill, #root .document .period > .head {
   display: flex;
   flex-direction: row;
+}
+#root .document .iconic {
+  gap: 0.6rem;
+}
+#root .document .iconic .icon-ctn {
+  flex-basis: 1rem;
+  text-align: center;
+}
+#root .document .period > .head, #root .document .rated-skill {
   justify-content: space-between;
 }
 #root .document .period > .head {
