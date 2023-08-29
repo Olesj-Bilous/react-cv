@@ -12,7 +12,7 @@ export const computed = <T extends ModelStore>(get: () => T) => ({
     return eras
   },
   getMainEraFilter() {
-    const mainTitles = ['Experience', 'Projects']
+    const mainTitles = ['Ervaring', 'Projecten', 'Experience', 'Projects']
     return filterMap(this.getSelectedEras(), era => mainTitles.some(title => title === era.title))
   },
   getMainPeriods(): SectionArray<FeaturedPeriod> {

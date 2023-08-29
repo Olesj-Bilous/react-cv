@@ -1,19 +1,18 @@
 import { useState } from "react";
-import { useEditPermissionContext } from "../../contexts/EditContext";
+import { useEditPermissionContext, useEditableContext } from "../../contexts/EditContext";
 
 
-export function EditImage({ img }: { img?: string }) {
-  const { allowEdit } = useEditPermissionContext()
-  const [src, setSrc] = useState(img ?? '~/john-wayne.webp')
+export function EditImage({ value, set }: EditValueProps<string>) {
+  const { editToggled } = useEditableContext()
   return (
     <div className="img">
-      <img src={src} alt="profile" />
+      <img src={value} alt="profile" />
       {
-        allowEdit &&
+        editToggled &&
           <input
             type="file"
             accept="image/*"
-            onChange={event => event.target.files?.[0] && setSrc(URL.createObjectURL(event.target.files[0]))}
+            onChange={event => event.target.files?.[0] && set(URL.createObjectURL(event.target.files[0]))}
           />
         }
     </div>

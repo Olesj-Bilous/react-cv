@@ -17,8 +17,8 @@ function App() {
   } = useZustand(state => state.getSelectedProfile())
 
   const [dateSettings] = useState({
-    locales: 'en-US',
-    present: 'present'
+    locales: 'nl-BE',
+    present: 'heden'
   })
 
   const [allowEdit, setEditAllowance] = useState(true)
@@ -27,7 +27,8 @@ function App() {
     <DateSettingsContext.Provider value={dateSettings}>
       <EditPermissionContext.Provider value={{ allowEdit }}>
         <button onClick={() => setEditAllowance(!allowEdit)}>Toggle edit</button>
-        <div className="document">
+        <button onClick={() => window.print()}>Export to PDF</button>
+        <div id="document">
           <EditProfileHeader {...{
             id,
             img

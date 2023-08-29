@@ -4,7 +4,7 @@ import { useEditableContext } from '../../contexts/EditContext'
 
 export type EditorConfig = {
   element: 'input' | 'textarea'
-  type?: 'text' | 'date' | 'checkbox'
+  type?: 'text' | 'date' | 'month' | 'checkbox'
 }
 
 export function editorFactory<V extends string | boolean = string>({ element, type }: EditorConfig) {

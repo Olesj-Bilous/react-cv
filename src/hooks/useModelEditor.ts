@@ -22,8 +22,8 @@ export function useModelEditor<T extends Model, X extends '' | keyof T = ''>(
   )
 
   const save = useCallback(
-    () => { setGlobalModel(model); toggleEdit(false) },
-    [model]
+    () => { setGlobalModel(model); toggleEdit(toggled ?? false) },
+    [model, toggled]
   )
 
   const isTouched = useMemo(

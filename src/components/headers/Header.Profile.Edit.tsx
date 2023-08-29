@@ -21,7 +21,7 @@ export function EditProfileHeader({ id }: Model & { img: string }) {
   const profileSetter = useZustand(store => store.profileSetter(id))
   const {
     control,
-    content: { firstName, lastName, profession, description }
+    content: { firstName, lastName, profession, description, img }
   } = useModelEditor({ modelSetter: profileSetter })
 
   return (
@@ -44,7 +44,7 @@ export function EditProfileHeader({ id }: Model & { img: string }) {
               display: introduction,
               edit: description
             },
-            prelude: {}
+            prelude: img
           }} />
         </HeaderLevelContext.Provider>
       </Editable>

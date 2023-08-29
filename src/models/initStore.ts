@@ -5,10 +5,24 @@ export const initStore: ModelStore = {
     models: {
       0: {
         id: '0',
-        icon: 'map-marker',
+        icon: 'location-pin',
         item: 'Texas',
         era: '0',
         order: 0
+      },
+      1: {
+        id: '1',
+        icon: 'horse',
+        item: 'Ridin them wild horses',
+        era: '6',
+        order: 1
+      },
+      2: {
+        id: '2',
+        icon: 'hat',
+        item: 'Bein a proper gentleman',
+        era: '5',
+        order: 2
       }
     },
     count: 1
@@ -45,6 +59,16 @@ export const initStore: ModelStore = {
         endDate: new Date(1953, 1),
         era: '2',
         order: 1
+      },
+      2: {
+        id: '2',
+        title: 'Diggin fer gold',
+        subtitle: 'Rocky mountains',
+        introduction: 'Ain\'t found much gold, but done a lotta diggin',
+        startDate: new Date(1959, 5),
+        endDate: new Date(1963, 11),
+        era: '4',
+        order: 2
       }
     },
     count: 2
@@ -90,11 +114,29 @@ export const initStore: ModelStore = {
         id: '2',
         title: 'Education',
         profile: '0',
-        order: 2
+        order: 6
       },
       3: {
         id: '3',
         title: 'Languages',
+        profile: '0',
+        order: 2
+      },
+      4: {
+        id: '4',
+        title: 'Projects',
+        profile: '0',
+        order: 4
+      },
+      5: {
+        id: '5',
+        title: 'Theory',
+        profile: '0',
+        order: 5
+      },
+      6: {
+        id: '6',
+        title: 'Skills',
         profile: '0',
         order: 3
       }

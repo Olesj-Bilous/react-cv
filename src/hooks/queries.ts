@@ -33,6 +33,10 @@ export const queries = <T extends ModelStore>(get: () => T) => ({
   },
   getPeriodDateString(settings:{locales: Intl.LocalesArgument,present:string}, formatOptions: Intl.DateTimeFormatOptions, id: string) {
     return displayPeriod(settings, formatOptions, this.getModel('periods', id))
+  },
+  getFeature(id: string) {
+    const {feature} = this.getModel('periodFeatures', id)
+    return feature
   }
 })
 
@@ -56,7 +60,10 @@ export function displayPeriodFromInput(
 
 export function dateToString(date: Date, locales: Intl.LocalesArgument, formatOptions: Intl.DateTimeFormatOptions) {
   if (formatOptions.dateStyle === 'short') {
-    return `${date.getMonth()}/'${date.getFullYear().toString().slice(2)}`
+    return `${date.getMonth() + 1}/'${date.getFullYear().toString().slice(2)}`
+  }
+  if (formatOptions.dateStyle === 'long') {
+    return `${date.toLocaleDateString(locales, { month: 'short' })} ${date.getFullYear()}`
   }
   return date.toLocaleDateString(locales, formatOptions)
 }

@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { editToggleFactory, editorFactory, simpleEditToggleFactory } from '../factories/editFactories'
 
-export const DisplayText = memo(({ display }: { display?: string }) => <>{display}</>)
+export const DisplayText = memo(({ display }: { display?: string }) => <div className="text">{display}</div>)
 
 export const EditText = memo(editorFactory({element:'input', type: 'text'}))
 

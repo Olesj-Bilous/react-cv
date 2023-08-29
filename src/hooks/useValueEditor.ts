@@ -2,7 +2,9 @@ import { useState, useCallback, useMemo } from 'react'
 
 
 export function useValueEditor<T extends boolean | number | string>(
-  { value: storeValue, set: setStore }: EditValueProps<T>
+  { value: storeValue, set: setStore, toggled }: EditValueProps<T> & {
+    toggled?: boolean
+  }
 ): {
   content: EditValueProps<T>
   control: EditControl
@@ -17,8 +19,8 @@ export function useValueEditor<T extends boolean | number | string>(
   )
 
   const save = useCallback(
-    () => setStore(value),
-    [value]
+    () => { setStore(value); toggleEdit(toggled ?? false)},
+    [value, toggled]
   )
 
   const isTouched = useMemo(

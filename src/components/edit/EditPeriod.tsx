@@ -4,7 +4,7 @@ import { DisplayText } from "./EditText";
 
 export const EditBoolean = memo(editorFactory<boolean>({element:'input', type:'checkbox'}))
 
-export const EditDate = memo(editorFactory({element:'input', type:'date'}))
+export const EditDate = memo(editorFactory({element:'input', type:'month'}))
 
 export function EditPeriod({ startDate, endDate, toPresent }: EditValuePropsMap<Model & {
   startDate: string

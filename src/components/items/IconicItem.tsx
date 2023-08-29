@@ -17,6 +17,13 @@ const icons: {
   'envelope': icon({ name: 'envelope' }),
   'phone': icon({ name: 'phone' }),
   'github': icon({ name: 'github', style: 'brands' }),
+  'server': icon({ name: 'server' }),
+  'database': icon({ name: 'database' }),
+  'globe': icon({ name: 'globe' }),
+  'js': icon({ name: 'js', style: 'brands' }),
+  'flask': icon({ name: 'flask' }),
+  'calculator': icon({ name: 'calculator' }),
+  'desktop': icon({name: 'desktop'}),
   'default': icon({ name: 'fire' })
 }
 
@@ -101,11 +108,11 @@ export function IconicItemControl({ icon, item, control, create }: {
 }
 
 export function ContactText({ display }: { display: string }) {
-  if (isUrl(display)) {
-    return <a href={`//${display}`}>{display}</a>
-  }
   if (isEmailAddress(display)) {
     return <a href={`mailto:${display}`}>{display}</a>
+  }
+  if (isUrl(display)) { // url could be email address...
+    return <a href={`//${display}`}>{display}</a>
   }
   if (isPhoneNumber(display)) {
     return <a href={`tel:${display}`}>{display}</a>

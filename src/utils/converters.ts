@@ -1,19 +1,16 @@
 
 
 export function dateToInput(date: Date): string {
-  const month = date.getMonth()
-  const day = date.getDate()
-  return `${date.getFullYear()}-${month < 10 ? `0${month}` : month }-${day < 10 ? `0${day}` : day}`
+  const month = date.getMonth() + 1
+  return `${date.getFullYear()}-${month < 10 ? `0${month}` : month }`
 }
 
 export function inputToDate(date?: string) {
   if (!date) return
-  const [year, month, day] = date.split('-').map(s => parseInt(s))
+  const [year, month] = date.split('-').map(s => parseInt(s))
 
-  if (isNaN(year)
-    || isNaN(month) || month < 0 || 12 < month
-    || isNaN(day) || day < 0 || 31 < day)
+  if (!year || isNaN(year) || !month || isNaN(month) || month < 1 || 12 < month)
     return
   
-  return new Date(year, month, day)
+  return new Date(year, month - 1)
 }

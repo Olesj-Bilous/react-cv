@@ -109,6 +109,29 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
         title: value
       })
     }
+  },
+  featureSetter(id: string): EditValueProps<string> {
+    const { feature } = get().getModel('periodFeatures', id)
+    const hook = this.setModel('periodFeatures')(id)
+    return {
+      value: feature,
+      set: value => hook({
+        feature: value.replace('\n', '<br />')
+      })
+    }
+  },
+  addFeature(periodId: string): ModelSetter<PeriodFeature, 'order' | 'period'> {
+    const hook = this.addModel('periodFeatures')
+    return [
+      {
+        feature: ''
+      },
+      partial => hook({
+        ...partial,
+        feature: partial.feature?.replace('\n', '<br />'),
+        period: periodId
+      })
+    ]
   }
 })
 
