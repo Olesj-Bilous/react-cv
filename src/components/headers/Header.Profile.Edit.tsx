@@ -6,11 +6,13 @@ import { useZustand } from "../../hooks/useZustand";
 import { EditText, EditTextToggle, EditTextarea, EditTextareaToggle } from "../edit/EditText";
 import { EditFullName, EditFullNameToggle } from "../edit/EditFullName";
 import { Editable } from "../edit/Editable";
+import { EditImage } from "../edit/EditImage";
 
 const ProfileHeader = memo(headerFactory({
   Title: EditFullNameToggle,
   Subtitle: EditTextToggle,
-  Introduction: EditTextareaToggle
+  Introduction: EditTextareaToggle,
+  Prelude: EditImage
 }))
 
 export function EditProfileHeader({ id }: Model & { img: string }) {
@@ -41,7 +43,8 @@ export function EditProfileHeader({ id }: Model & { img: string }) {
             introduction: {
               display: introduction,
               edit: description
-            }
+            },
+            prelude: {}
           }} />
         </HeaderLevelContext.Provider>
       </Editable>
