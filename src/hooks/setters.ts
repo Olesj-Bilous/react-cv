@@ -1,5 +1,5 @@
 import { StoreQueries } from "./queries";
-import { dateToInput, inputToDate } from "../utils/converters";
+import { dateToMonthInput, monthInputToDate } from "../utils/dateConverters";
 
 export type PeriodSetter = ModelSetter<Period, 'era' | 'order' | 'title'>
 
@@ -35,8 +35,8 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
     const { startDate, endDate, toPresent, title, subtitle, introduction } = get().getModel('periods', id)
     return [
       {
-        startDate: dateToInput(startDate),
-        endDate: dateToInput(endDate ?? new Date()),
+        startDate: dateToMonthInput(startDate),
+        endDate: dateToMonthInput(endDate ?? new Date()),
         toPresent: toPresent ?? false,
         title,
         subtitle: subtitle ?? '',
@@ -44,8 +44,8 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
       },
       partial => hook({
         ...partial,
-        startDate: inputToDate(partial.startDate),
-        endDate: inputToDate(partial.endDate)
+        startDate: monthInputToDate(partial.startDate),
+        endDate: monthInputToDate(partial.endDate)
       })
     ]
   },
@@ -82,7 +82,7 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
   },
   addPeriod(eraId: string): ModelSetter<Period, 'order' | 'era'> {
     const hook = this.addModel('periods')
-    const [startDate, endDate] = [dateToInput(new Date()), dateToInput(new Date())]
+    const [startDate, endDate] = [dateToMonthInput(new Date()), dateToMonthInput(new Date())]
     return [
       {
         startDate,
@@ -94,8 +94,8 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
       },
       partial => hook({
         ...partial,
-        startDate: inputToDate(partial.startDate),
-        endDate: inputToDate(partial.endDate),
+        startDate: monthInputToDate(partial.startDate),
+        endDate: monthInputToDate(partial.endDate),
         era: eraId
       })
     ]
@@ -136,15 +136,3 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
 })
 
 export type StoreSetters = ReturnType<typeof setters>
-
-export const headerSetters = <T extends ModelStore & StoreQueries & StoreSetters>(set: setZustand<ModelStore>, get: () => T) => ({
-  headerSetters: {
-    profiles: (id: string) => {
-      const setter = get().profileSetter(id)
-      return 
-    },
-    periods: (id: string) => get().periodSetter(id)
-  }
-})
-
-export type StoreHeaderSetters = ReturnType<typeof headerSetters>

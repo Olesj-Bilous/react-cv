@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
-import { editToggleFactory } from "../factories/editFactories"
+import { editToggleFactory } from "../editable/factory.EditToggle"
 
 const [solid, regular] = [icon({ name: 'star', style: 'solid' }), icon({ name: 'star', style: 'regular' })]
 

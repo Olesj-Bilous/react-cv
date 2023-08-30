@@ -1,13 +1,13 @@
 import { EditSectionHeader } from "./headers/Header.Section.Edit"
-import { HeaderLevelContext } from "./headers/Header.factory"
+import { HeaderLevelContext } from "./headers/factory.Header"
 import { useZustand } from "../hooks/useZustand"
-import { useEditPermissionContext } from "../contexts/EditContext"
+import { useEditPermissionContext } from "../contexts/Editable.Context"
 import { AddPeriodHeader } from "./headers/Header.Period.Add"
 
 
-export function Section<TProps extends Model>({ id, items, Component, AddComponent }
-  : Model & Omit<Section<TProps>, 'title'> & {
-    Component: React.FC<TProps>
+export function Section<I extends Model = Model>({ id, items, Component, AddComponent }
+  : Section<I> & {
+    Component: React.FC<I>
     AddComponent?: React.FC<{eraId: string}>
   }
 ) {

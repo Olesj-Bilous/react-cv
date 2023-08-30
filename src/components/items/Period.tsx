@@ -1,7 +1,7 @@
 import { useZustand } from "../../hooks/useZustand";
 import { createContext, useContext } from "react";
 
-import { contextFactory } from "../../contexts/contextFactory";
+import { contextFactory } from "../../contexts/factory.Context";
 
 export const [DateSettingsContext, useDateSettingsContext] = contextFactory<{
   locales: Intl.LocalesArgument

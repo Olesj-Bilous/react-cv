@@ -1,13 +1,7 @@
 
-import { EditableContext } from "../../contexts/EditContext";
-import { displayPeriod, displayPeriodFromInput } from "../../hooks/queries";
 import { useModelEditor } from "../../hooks/useModelEditor";
 import { useZustand } from "../../hooks/useZustand";
-import { Editable } from "../edit/Editable";
-import { EditPeriod, EditPeriodToggle } from "../edit/EditPeriod";
-import { EditTextToggle, EditTextareaToggle } from "../edit/EditText";
 import { useDateFormatContext, useDateSettingsContext } from "../items/Period";
-import { headerFactory, HeaderLevelContext } from "./Header.factory";
 import { PeriodHeaderControl } from "./Header.Period.Control";
 
 export function EditPeriodHeader({ id }: Model) {

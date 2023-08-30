@@ -1,10 +1,9 @@
-import { createContext, useContext } from "react";
 import { EditPeriodHeader} from "../headers/Header.Period.Edit";
 import { AddFeature, EditFeature } from "./Feature";
-import { useEditPermissionContext } from "../../contexts/EditContext";
+import { useEditPermissionContext } from "../../contexts/Editable.Context";
 
 
-export function PeriodFeatures({ features, id }: Period & { features: PeriodFeature[] } & React.Attributes) {
+export function PeriodFeatures({ features, id }: Model & { features: string[] } & React.Attributes) {
   const {allowEdit} = useEditPermissionContext()
   return (
     <article>
@@ -12,8 +11,8 @@ export function PeriodFeatures({ features, id }: Period & { features: PeriodFeat
       <ul>
         {
           features.map((feature) => (
-            <li key={feature.id}>
-              <EditFeature id={feature.id} />
+            <li key={feature}>
+              <EditFeature id={feature} />
             </li>
           ))
         }

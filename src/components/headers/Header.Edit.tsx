@@ -1,5 +1,5 @@
-import { headerFactory } from "./Header.factory"
-import { EditTextToggle, EditTextareaToggle } from "../edit/EditText"
+import { headerFactory } from "./factory.Header"
+import { EditTextToggle, EditTextareaToggle } from "../primitives/EditText"
 
 export const EditHeader = headerFactory({
   Title: EditTextToggle,

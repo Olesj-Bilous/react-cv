@@ -1,9 +1,8 @@
 import { useModelEditor } from "../../hooks/useModelEditor";
 import { useValueEditor } from "../../hooks/useValueEditor";
 import { useZustand } from "../../hooks/useZustand";
-import { EditTextToggle, EditTextareaToggle } from "../edit/EditText";
-import { Editable } from "../edit/Editable";
-import { editToggleFactory } from "../factories/editFactories";
+import { EditTextareaToggle } from "../primitives/EditText";
+import { Editable } from "../editable/Editable";
 
 export function AddFeature({periodId}: {periodId: string}) {
   const storeFeature = useZustand(store => store.addFeature(periodId))

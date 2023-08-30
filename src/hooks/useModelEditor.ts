@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from "react"
-import { shallowCompare } from "../utils/objectChecks"
-import { useEditPermissionContext } from "../contexts/EditContext"
+import { shallowCompare } from "../utils/checks/objectChecks"
+import { useEditPermissionContext } from "../contexts/Editable.Context"
 
 export function useModelEditor<T extends Model, X extends '' | keyof T = ''>(
   { modelSetter: [globalModel, setGlobalModel], toggled }: {

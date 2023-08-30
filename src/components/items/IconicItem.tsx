@@ -1,35 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
-import { IconDefinition, IconName } from "@fortawesome/fontawesome-svg-core";
-
-import { isUrl, isEmailAddress, isPhoneNumber } from "../../utils/stringChecks";
-import { mapToArray } from "../../utils/mapQueries";
-import { editToggleFactory, simpleEditToggleFactory } from "../factories/editFactories";
-import { EditText } from "../edit/EditText";
-import { Editable } from "../edit/Editable";
+import { Editable } from "../editable/Editable";
 import { useZustand } from "../../hooks/useZustand";
 import { useModelEditor } from "../../hooks/useModelEditor";
-
-const icons: {
-  [key: string]: IconDefinition
-} = {
-  'location-pin': icon({ name: 'location-pin' }),
-  'envelope': icon({ name: 'envelope' }),
-  'phone': icon({ name: 'phone' }),
-  'github': icon({ name: 'github', style: 'brands' }),
-  'server': icon({ name: 'server' }),
-  'database': icon({ name: 'database' }),
-  'globe': icon({ name: 'globe' }),
-  'js': icon({ name: 'js', style: 'brands' }),
-  'flask': icon({ name: 'flask' }),
-  'calculator': icon({ name: 'calculator' }),
-  'desktop': icon({name: 'desktop'}),
-  'default': icon({ name: 'fire' })
-}
-
-export function isIcon(name: string): name is Exclude<IconName, Exclude<IconName, keyof typeof icons>> {
-  return name in icons
-}
+import { EditContactToggle } from "../primitives/EditContactText";
+import { EditIconToggle } from "../primitives/EditIcon";
 
 export function EditIconicItem({ id }: Model) {
   const model = useZustand(store => store.getModel('iconicItems', id))
@@ -46,9 +19,7 @@ export function EditIconicItem({ id }: Model) {
   return <IconicItemControl {...{
     control,
     icon: {
-      display: {
-        icon: isIcon(icon) ? icons[icon]! : icons['default']!
-      },
+      display: icon,
       edit: setIcon
     },
     item: {
@@ -70,24 +41,20 @@ export function AddIconicItem({ eraId }: { eraId: string }) {
     create: true,
     control,
     icon: {
-      display: {
-        icon: isIcon(icon.value) ? icons[icon.value]! : icons['default']!
-      },
+      display: icon.value,
       edit: icon
     },
     item: {
       display: item.value,
       edit: item
     }
-  }} ></IconicItemControl>
+  }} />
 }
 
 export function IconicItemControl({ icon, item, control, create }: {
   control: EditControl
   icon: {
-    display: {
-      icon: IconDefinition
-    }
+    display: string
     edit: EditValueProps<string>
   }
   item: EditToggleProp<string>
@@ -106,36 +73,3 @@ export function IconicItemControl({ icon, item, control, create }: {
     </Editable>
   );
 }
-
-export function ContactText({ display }: { display: string }) {
-  if (isEmailAddress(display)) {
-    return <a href={`mailto:${display}`}>{display}</a>
-  }
-  if (isUrl(display)) { // url could be email address...
-    return <a href={`//${display}`}>{display}</a>
-  }
-  if (isPhoneNumber(display)) {
-    return <a href={`tel:${display}`}>{display}</a>
-  }
-  return <>{ display }</>
-}
-
-export const EditContactToggle = simpleEditToggleFactory(EditText, ContactText)
-
-export function SelectIcon({value, set}: EditValueProps<string>) {
-  const iconList = mapToArray(icons)
-  const selected = icons[value]?.iconName ?? iconList[0]?.iconName
-  return (
-    <select value={selected} onChange={e => set(e.target.value)}>
-    {
-      iconList.map(item => (
-        <option value={item.iconName} key={item.iconName}>
-          {item.iconName}
-        </option>
-      ))
-    }
-    </select>
-  )
-}
-
-export const EditIconToggle = editToggleFactory(SelectIcon, FontAwesomeIcon)

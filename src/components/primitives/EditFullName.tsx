@@ -1,6 +1,6 @@
-import {memo} from 'react'
+import { memo } from 'react'
 import { DisplayText, EditText } from "./EditText"
-import { editToggleFactory, simpleEditToggleFactory } from '../factories/editFactories'
+import { simpleEditToggleFactory } from '../editable/factory.EditToggle'
 
 export function EditFullName({ firstName, lastName }: EditValuePropsMap<Model & FullName>) {
   return (

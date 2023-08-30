@@ -1,5 +1,5 @@
 import { memo, useState } from 'react'
-import { EditPermissionContext, EditableContext, useEditPermissionContext, useEditableContext } from '../../contexts/EditContext'
+import { EditPermissionContext, EditableContext, useEditPermissionContext, useEditableContext } from '../../contexts/Editable.Context'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
 

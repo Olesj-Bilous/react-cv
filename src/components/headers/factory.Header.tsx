@@ -1,5 +1,5 @@
 import { createElement, memo, FC } from 'react'
-import { contextFactory } from '../../contexts/contextFactory'
+import { contextFactory } from '../../contexts/factory.Context'
 
 export const [ HeaderLevelContext, useHeaderLevelContext ] = contextFactory<{ level: 1 | 2 | 3 | 4 }>('HeaderLevel', 'level')
 

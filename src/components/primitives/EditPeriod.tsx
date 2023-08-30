@@ -1,5 +1,6 @@
-import { editToggleFactory, editorFactory, simpleEditToggleFactory } from "../factories/editFactories";
-import { memo} from 'react'
+import { simpleEditToggleFactory } from "../editable/factory.EditToggle";
+import { editorFactory } from "../editable/factory.Editor";
+import { memo } from 'react'
 import { DisplayText } from "./EditText";
 
 export const EditBoolean = memo(editorFactory<boolean>({element:'input', type:'checkbox'}))

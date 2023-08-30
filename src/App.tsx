@@ -8,7 +8,7 @@ import { Profile } from './components/Profile'
 import { DateSettingsContext } from './components/items/Period'
 import { Main } from './components/Main'
 import { EditProfileHeader } from './components/headers/Header.Profile.Edit'
-import { EditPermissionContext } from './contexts/EditContext'
+import { EditPermissionContext } from './contexts/Editable.Context'
 
 function App() {
   const {

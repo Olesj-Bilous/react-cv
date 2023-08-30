@@ -1,9 +1,8 @@
-import { inputToDate } from "../utils/converters"
+import { displayPeriod } from "../utils/dateConverters"
 
 
 export const queries = <T extends ModelStore>(get: () => T) => ({
   getModel<K extends keyof ModelStore>(type: K, id: string) {
-    const gotten = get()
     return get()[type].models[id] as ModelType<StoredModel<K>>
   },
   getHeaderProps(type: 'periods' | 'profiles' | 'eras', id: string): HeaderProps {
@@ -39,42 +38,5 @@ export const queries = <T extends ModelStore>(get: () => T) => ({
     return feature
   }
 })
-
-export function displayPeriodFromInput(
-  settings: {
-    locales: Intl.LocalesArgument,
-    present: string
-  },
-  formatOptions: Intl.DateTimeFormatOptions,
-  period: InputModel<Period, keyof Omit<Period, keyof PeriodProps>>
-) {
-  const startDate = inputToDate(period.startDate)
-  if (!startDate) return ''
-
-  return displayPeriod(settings, formatOptions, {
-    ...period,
-    startDate,
-    endDate: inputToDate(period.endDate)
-  })
-}
-
-export function dateToString(date: Date, locales: Intl.LocalesArgument, formatOptions: Intl.DateTimeFormatOptions) {
-  if (formatOptions.dateStyle === 'short') {
-    return `${date.getMonth() + 1}/'${date.getFullYear().toString().slice(2)}`
-  }
-  if (formatOptions.dateStyle === 'long') {
-    return `${date.toLocaleDateString(locales, { month: 'short' })} ${date.getFullYear()}`
-  }
-  return date.toLocaleDateString(locales, formatOptions)
-}
-
-export function displayPeriod({locales, present}: { locales: Intl.LocalesArgument, present: string }, formatOptions: Intl.DateTimeFormatOptions, period: PeriodProps) {
-  const { startDate, endDate, toPresent } = period
-
-  const end = (toPresent && present)
-    || (endDate && dateToString(endDate, locales, formatOptions))
-
-  return `${dateToString(startDate, locales, formatOptions)}${end ? ` - ${end}` : ''}`
-}
 
 export type StoreQueries = ReturnType<typeof queries>

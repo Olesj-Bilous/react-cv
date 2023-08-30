@@ -4,16 +4,15 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 import { initStore } from '../models/initStore'
 import { StoreComputed, computed } from './computed'
 import { StoreQueries, queries } from './queries'
-import { StoreHeaderSetters, StoreSetters, headerSetters, setters } from './setters'
+import { StoreSetters, setters } from './setters'
 
-export const useZustand = create<ModelStore & StoreComputed & StoreQueries & StoreSetters & StoreHeaderSetters>()(
+export const useZustand = create<ModelStore & StoreComputed & StoreQueries & StoreSetters>()(
   persist(
     (set, get) => ({
       ...initStore,
       ...computed(get),
       ...queries(get),
-      ...setters(set, get),
-      ...headerSetters(set, get)
+      ...setters(set, get)
     }), {
       name: 'cv-store',
       storage: createJSONStorage(

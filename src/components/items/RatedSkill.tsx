@@ -1,10 +1,10 @@
 
 import { createContext, useContext } from 'react'
 import { useZustand } from '../../hooks/useZustand'
-import { Editable } from '../edit/Editable'
+import { Editable } from '../editable/Editable'
 import { useModelEditor } from '../../hooks/useModelEditor'
-import { EditRatingToggle } from '../edit/EditRating'
-import { EditTextToggle } from '../edit/EditText'
+import { EditRatingToggle } from '../primitives/EditRating'
+import { EditTextToggle } from '../primitives/EditText'
 
 export const RatedSkillContext = createContext<null | number>(null)
 

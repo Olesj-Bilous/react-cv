@@ -1,12 +1,11 @@
-import { useState , useCallback, useMemo, createElement, memo} from "react";
-import { headerFactory, HeaderLevelContext } from "./Header.factory";
-import { EditableContext, useEditPermissionContext } from "../../contexts/EditContext";
+import { memo} from "react";
+import { headerFactory, HeaderLevelContext } from "./factory.Header";
 import { useModelEditor } from "../../hooks/useModelEditor"; 
 import { useZustand } from "../../hooks/useZustand";
-import { EditText, EditTextToggle, EditTextarea, EditTextareaToggle } from "../edit/EditText";
-import { EditFullName, EditFullNameToggle } from "../edit/EditFullName";
-import { Editable } from "../edit/Editable";
-import { EditImage } from "../edit/EditImage";
+import { EditTextToggle, EditTextareaToggle } from "../primitives/EditText";
+import { EditFullNameToggle } from "../primitives/EditFullName";
+import { Editable } from "../editable/Editable";
+import { EditImage } from "../primitives/EditImage";
 
 const ProfileHeader = memo(headerFactory({
   Title: EditFullNameToggle,

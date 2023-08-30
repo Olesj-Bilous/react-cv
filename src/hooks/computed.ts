@@ -1,6 +1,6 @@
-import { filterMap, mapMap, mapToArray } from '../utils/mapQueries'
+import { filterMap } from '../utils/mapQueries'
 import { ProfileSections } from '../components/Profile'
-import { eventsMapToSectionArray } from '../models/eventsMapToSectionArray'
+import { eventsMapToSections } from '../models/eventsMapToSectionArray'
 
 export const computed = <T extends ModelStore>(get: () => T) => ({
   getSelectedProfile() {
@@ -15,28 +15,27 @@ export const computed = <T extends ModelStore>(get: () => T) => ({
     const mainTitles = ['Ervaring', 'Projecten', 'Experience', 'Projects']
     return filterMap(this.getSelectedEras(), era => mainTitles.some(title => title === era.title))
   },
-  getMainPeriods(): SectionArray<FeaturedPeriod> {
-    const models = get().periods.models
-    const filter = this.getMainEraFilter()[0]
+  getMainPeriods(): SectionArray<Model & {features: string[]}> {
+    const periods = get().periods.models
+    const [eras] = this.getMainEraFilter()
     const profile = this.getSelectedProfile()
-    const sections = eventsMapToSectionArray<Period>(
-      models,
-      filter,
+    const sections = eventsMapToSections(
+      periods,
+      eras,
       profile
     )
     return sections.map(section => ({
-      ...section,
+      id: section.id,
       items: section.items.map(period => ({
         ...period,
-        features: mapToArray(
+        features: Object.values(
           filterMap(
             get().periodFeatures.models,
             feature => feature.period === period.id
           )[0]
-        ).sort((a, b) => a.order - b.order).map(feature => ({
-          ...feature,
-          period
-        }))
+        ).sort(
+          (a, b) => a.order - b.order
+        ).map(feature => feature.id)
       }))
     }))
   },
@@ -50,7 +49,7 @@ export const computed = <T extends ModelStore>(get: () => T) => ({
     }
 
     for (const sectionKey in profileModelMaps) {
-      profileSections[sectionKey as keyof ProfileSections] = eventsMapToSectionArray<IconicItem & RatedSkill & Period>(
+      profileSections[sectionKey as keyof ProfileSections] = eventsMapToSections(
         profileModelMaps[sectionKey as keyof ProfileSections].models as ModelMap<IconicItem & RatedSkill & Period>['models'],
         this.getMainEraFilter()[1],
         this.getSelectedProfile()

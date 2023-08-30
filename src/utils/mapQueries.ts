@@ -4,39 +4,38 @@ export function filterMap<T>(map: KeyMap<T>, filter: (item: T) => boolean) {
   const positive: KeyMap<T> = {}
   const negative: KeyMap<T> = {}
   for (const key in map) {
-    if (filter(map[key]))
-      positive[key] = map[key]
+    const item = map[key]
+    if (!item) continue
+    if (filter(item))
+      positive[key] = item
     else {
-      negative[key] = map[key]
+      negative[key] = item
     }
   }
   return [positive, negative] as [positive: KeyMap<T>, negative: KeyMap<T>]
 }
 
-export function mapMap<T, V>(map: KeyMap<T>, mapping: (model: T) => V) {
+export function transformMap<T, V>(map: KeyMap<T>, transform: (item: T) => V) {
   const result: KeyMap<V> = {}
   for (const key in map) {
-    result[key] = mapping(map[key])
+    const item = map[key]
+    if (!item) continue
+    result[key] = transform(item)
   }
   return result
 }
 
-export function mapContains<T>(map: KeyMap<T>, filter: (item: T) => boolean, matchAll?: boolean) {
+export function matchingKeys<T>(map: KeyMap<T>, filter: (item: T) => boolean, onlyFirst?: boolean) {
   const keys: string[] = []
   for (const key in map) {
-    if (filter(map[key])) {
+    const item = map[key]
+    if (!item) continue
+    if (filter(item)) {
       keys.push(key)
-      if (!matchAll)
+      if (onlyFirst)
         return keys
     }
   }
   return keys
-}
-
-export function mapToArray<T, F = T>(map: KeyMap<T>) {
-  const array: (T | F)[] = []
-  for (const key in map)
-    array.push(map[key])
-  return array
 }
 

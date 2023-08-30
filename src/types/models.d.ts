@@ -57,9 +57,10 @@ interface IconicItem extends EraEvent {
   item: string
 }
 
-interface Section<TItem extends Model> extends OrderedModel {
-  title: string
-  items: TItem[]
+interface Section<I extends Model = Model> extends Model {
+  items: I[]
 }
 
-type SectionArray<TItem extends Model> = Section<TItem>[]
+type SectionArray<I extends Model = Model> = Section<I>[]
+
+type OrderedSection = Section & {order: number}

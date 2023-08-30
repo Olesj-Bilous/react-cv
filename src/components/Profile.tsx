@@ -8,13 +8,13 @@ import { Section } from "./Section"
 
 
 export interface ProfileSections {
-  iconicItems: SectionArray<Model>
-  ratedSkills: SectionArray<Model>
-  periods: SectionArray<Model>
+  iconicItems: OrderedSection[]
+  ratedSkills: OrderedSection[]
+  periods: OrderedSection[]
 }
 
 const components = {
-  iconicItems: [ EditIconicItem, AddIconicItem ] as [React.FC<Model>, React.FC<{eraId:string}>],
+  iconicItems: [EditIconicItem, AddIconicItem] as [React.FC<Model>, React.FC<{ eraId: string }>],
   ratedSkills: [EditRatedSkill, AddRatedSkill] as [React.FC<Model>, React.FC<{ eraId: string }>],
   periods: [EditPeriodHeader, AddPeriodHeader] as [React.FC<Model>, React.FC<{ eraId: string }>]
 }

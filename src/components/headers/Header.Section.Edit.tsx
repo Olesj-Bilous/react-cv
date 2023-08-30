@@ -1,10 +1,8 @@
-import {useState} from 'react'
 import { useZustand } from "../../hooks/useZustand";
-import { HeaderLevelContext } from "./Header.factory";
+import { HeaderLevelContext } from "./factory.Header";
 import { EditHeader } from './Header.Edit';
-import { EditableContext } from "../../contexts/EditContext";
 import { useValueEditor } from '../../hooks/useValueEditor';
-import { Editable } from '../edit/Editable';
+import { Editable } from '../editable/Editable';
 
 export function EditSectionHeader({ id }: Model & React.Attributes) {
   const { title } = useZustand(store => store.getHeaderProps('eras', id))

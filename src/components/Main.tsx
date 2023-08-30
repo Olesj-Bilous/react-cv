@@ -4,11 +4,6 @@ import { PeriodFeatures } from "./items/Period.Features"
 import { useZustand } from "../hooks/useZustand"
 import { AddPeriodHeader } from "./headers/Header.Period.Add"
 
-
-export interface MainProps {
-  map: SectionArray<Period & { features: string[] }>
-}
-
 export function Main() {
   const sections = useZustand(store => store.getMainPeriods())
   return (
@@ -20,7 +15,6 @@ export function Main() {
           {
             sections.map((section, i) => <Section {...{
               key: i,
-              itemKey: 'periods',
               ...section,
               Component: PeriodFeatures,
               AddComponent: AddPeriodHeader

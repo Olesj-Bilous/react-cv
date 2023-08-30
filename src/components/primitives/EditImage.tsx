@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEditPermissionContext, useEditableContext } from "../../contexts/EditContext";
+import { useEditableContext } from "../../contexts/Editable.Context";
 
 
 export function EditImage({ value, set }: EditValueProps<string>) {
