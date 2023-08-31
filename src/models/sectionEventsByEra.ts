@@ -1,9 +1,8 @@
 import { filterMap } from '../utils/mapQueries'
 
-export function eventsMapToSections(
+export function sectionEventsByEra(
   events: KeyMap<ModelType<EraEvent>>,
-  eras: KeyMap<ModelType<Era>>,
-  profile: Profile
+  eras: KeyMap<ModelType<Era>>
 ): OrderedSection[] {
   const sections: OrderedSection[] = []
   for (const key in eras) {
@@ -14,7 +13,7 @@ export function eventsMapToSections(
       id: event.id,
       order: event.order
     })).sort((a, b) => a.order - b.order)
-    const { id, title, order } = era
+    const { id, order } = era
     if (items.length) {
       sections.push({
         id,

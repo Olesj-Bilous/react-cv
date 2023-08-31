@@ -1,6 +1,6 @@
 import { filterMap } from '../utils/mapQueries'
 import { ProfileSections } from '../components/Profile'
-import { eventsMapToSections } from '../models/eventsMapToSectionArray'
+import { sectionEventsByEra } from '../models/sectionEventsByEra'
 
 export const computed = <T extends ModelStore>(get: () => T) => ({
   getSelectedProfile() {
@@ -19,10 +19,9 @@ export const computed = <T extends ModelStore>(get: () => T) => ({
     const periods = get().periods.models
     const [eras] = this.getMainEraFilter()
     const profile = this.getSelectedProfile()
-    const sections = eventsMapToSections(
+    const sections = sectionEventsByEra(
       periods,
-      eras,
-      profile
+      eras
     )
     return sections.map(section => ({
       id: section.id,
@@ -49,10 +48,9 @@ export const computed = <T extends ModelStore>(get: () => T) => ({
     }
 
     for (const sectionKey in profileModelMaps) {
-      profileSections[sectionKey as keyof ProfileSections] = eventsMapToSections(
+      profileSections[sectionKey as keyof ProfileSections] = sectionEventsByEra(
         profileModelMaps[sectionKey as keyof ProfileSections].models as ModelMap<IconicItem & RatedSkill & Period>['models'],
-        this.getMainEraFilter()[1],
-        this.getSelectedProfile()
+        this.getMainEraFilter()[1]
       )
     }
 

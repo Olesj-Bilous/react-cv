@@ -1,5 +1,6 @@
 import { StoreQueries } from "./queries";
 import { dateToMonthInput, monthInputToDate } from "../utils/dateConverters";
+import { periodScheme } from "../models/periodScheme";
 
 export type PeriodSetter = ModelSetter<Period, 'era' | 'order' | 'title'>
 
@@ -22,6 +23,11 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
         }
       }))
     }
+  },
+  addModel<K extends keyof ModelStore, X extends '' | keyof StoredModel<K> = ''>(modelType: K, increment?: number) {
+    const count = get()[modelType].count + (increment ?? 1)
+    const hook = this.setModel<K, X>(modelType)(count.toString())
+    return hook
   },
   profileSetter(id: string): ModelSetter<Profile> {
     const { firstName, lastName, profession, description, img } = get().getModel('profiles', id)
@@ -48,11 +54,6 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
         endDate: monthInputToDate(partial.endDate)
       })
     ]
-  },
-  addModel<K extends keyof ModelStore, X extends '' | keyof StoredModel<K> = ''>(modelType: K, increment?: number) {
-    const count = get()[modelType].count + (increment ?? 1)
-    const hook = this.setModel<K, X>(modelType)(count.toString())
-    return hook
   },
   addEraEvent<K extends 'periods' | 'ratedSkills' | 'iconicItems', X extends '' | keyof StoredModel<K> = ''>(eventType: K, eraId: string) {
     return (partial: Partial<SetModel<StoredModel<K>, X>>) => this.addModel<K, X>(eventType)({
@@ -81,7 +82,7 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
     ]
   },
   addPeriod(eraId: string): ModelSetter<Period, 'order' | 'era'> {
-    const hook = this.addModel('periods')
+    const hook = this.addEraEvent<'periods', 'order' | 'era'>('periods', eraId)
     const [startDate, endDate] = [dateToMonthInput(new Date()), dateToMonthInput(new Date())]
     return [
       {
@@ -95,10 +96,34 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
       partial => hook({
         ...partial,
         startDate: monthInputToDate(partial.startDate),
-        endDate: monthInputToDate(partial.endDate),
-        era: eraId
+        endDate: monthInputToDate(partial.endDate)
       })
     ]
+  },
+  periodControl(
+    settings: {
+      locales: Intl.LocalesArgument;
+      present: string;
+    },
+    formatOptions: Intl.DateTimeFormatOptions
+  ) {
+    const control = periodScheme(settings, formatOptions)
+    return {
+      add: ({eraId}: {eraId:string}) => {
+        return {
+          add: control.add(this.addEraEvent('periods', eraId)),
+          preview: control.preview
+        }
+      },
+      set: ({ id }: Model) => {
+        const getter = () => get().getModel('periods', id)
+        return {
+          set: control.set(this.setModel('periods')(id), getter),
+          preview: control.preview,
+          display: control.display(getter)
+        }
+      }
+    }
   },
   eraTitleSetter(id: string): EditValueProps<string> {
     const { title } = get().getModel('eras', id)
@@ -116,7 +141,7 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
     return {
       value: feature,
       set: value => hook({
-        feature: value.replace('\n', '<br />')
+        feature: value
       })
     }
   },
@@ -128,7 +153,6 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
       },
       partial => hook({
         ...partial,
-        feature: partial.feature?.replace('\n', '<br />'),
         period: periodId
       })
     ]

@@ -1,5 +1,6 @@
 
 import { useModelEditor } from "../../hooks/useModelEditor";
+import { useHookedEditor } from "../../hooks/useModelEditor copy";
 import { useZustand } from "../../hooks/useZustand";
 import { useDateFormatContext, useDateSettingsContext } from "../items/Period";
 import { PeriodHeaderControl } from "./Header.Period.Control";
@@ -8,39 +9,13 @@ export function EditPeriodHeader({ id }: Model) {
   const settings = useDateSettingsContext()
   const { formatOptions } = useDateFormatContext()
 
-  const period = useZustand(store => store.getPeriodDateString(settings, formatOptions, id))
-  const { title, subtitle, introduction } = useZustand(store => store.getHeaderProps('periods', id))
-
-  const periodSetter = useZustand(store => store.periodSetter(id))
-  const {
-    control,
-    content: {
-      title: setTitle, subtitle: setSubtitle, introduction: setIntroduction,
-      startDate, endDate, toPresent
-    }
-  } = useModelEditor({ modelSetter: periodSetter })
+  const { set, display } = useZustand(store => store.periodControl(settings, formatOptions).set({ id }))
+  
+  const { control, map } = useHookedEditor({modelSetter: set})
 
   return <PeriodHeaderControl {...{
     control,
-    title: {
-      display: title,
-      edit: setTitle
-    },
-    subtitle: {
-      display: subtitle,
-      edit: setSubtitle
-    },
-    introduction: {
-      display: introduction,
-      edit: setIntroduction
-    },
-    period: {
-      display: period,
-      edit: {
-        startDate,
-        endDate,
-        toPresent
-      }
-    }
+    map,
+    display
   }} />
 }

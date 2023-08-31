@@ -12,7 +12,7 @@ export function editorFactory<V extends string | boolean = string, E extends 'in
   const valueAttribute = type === 'checkbox' ? 'checked' : 'value'
 
   return function Editor(
-    { value, set, disabled }: EditValueProps<V> & { disabled?: boolean }
+    { hook: [value, set], disabled }: { hook: HookedValue<V>} & { disabled?: boolean }
   ) {
     const onChange = useCallback(
       (event: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement>) => set(event.target[valueAttribute] as V),

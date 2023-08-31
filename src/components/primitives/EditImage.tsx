@@ -1,6 +1,5 @@
 import { useEditableContext } from "../../contexts/Editable.Context";
 
-
 export function EditImage({ value, set }: EditValueProps<string>) {
   const { editToggled } = useEditableContext()
   return (
