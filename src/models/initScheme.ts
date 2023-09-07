@@ -33,35 +33,16 @@ export function initScheme<
       edit(defaults()),
       setHook(set)
     ],
-    set: (set, get) => [
-      edit(Object.assign({}, get(), defaults())),
+    set: (set, get) => {
+      return [
+      edit(Object.assign({}, defaults(), get())),
       setHook(set)
-    ],
+    ]},
     display: (get) => display(get()),
-    preview: (get) => display(Object.assign(accept(get()), defaults()))
+    preview: (get) => display(Object.assign(defaults(), accept(get())))
   }
 }
 
 export type DeepRequired<T> = {
   [K in keyof Required<T>]: Required<Required<T>[K]>
 }
-
-export function toToggle<
-  E extends object,
-  D extends {
-    [K in keyof E]: E[K] extends undefined ? undefined : any
-  } = E
->({ edit, display }: {
-  edit: DeepHookedMap<DeepRequired<E>>
-  display: D
-}): HookedEditMap<DeepRequired<E>, D> {
-  const map: Partial<HookedEditMap<DeepRequired<E>, D>> = {}
-  for (const key in edit) {
-    map[key] = {
-      edit: { hook: edit[key]},
-      display: display[key]
-    }
-  }
-  return map as HookedEditMap<DeepRequired<E>, D>
-}
-

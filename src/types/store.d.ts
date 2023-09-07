@@ -4,16 +4,18 @@ interface Model {
   id: string
 }
 
-type KeyMap<T> = { [key: string]: T }
+type SimpleValue = undefined | boolean | number | string | Date
 
 type ModelType<T extends Model> = {
   [Key in keyof T]:
-    T[Key] extends undefined | boolean | number | string | Date
+    T[Key] extends SimpleValue
       ? T[Key]
       : T[Key] extends Model
         ? T[Key]['id']
         : never
 }
+
+type KeyMap<T> = { [key: string]: T }
 
 interface ModelMap<T extends Model> {
   models: KeyMap<ModelType<T>>

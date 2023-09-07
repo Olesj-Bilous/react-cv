@@ -2,16 +2,22 @@ import { useState, useCallback, useMemo } from "react"
 import { shallowCompare } from "../utils/checks/objectChecks"
 import { useEditPermissionContext } from "../contexts/Editable.Context"
 
-export function useModelEditor<T extends Model, X extends '' | keyof T = ''>(
+export function isSimpleValue(value: any): value is SimpleValue {
+  return typeof value !== 'object' || isDate(value)
+}
+
+export function isDate(value: any): value is Date {
+  return value && Object.prototype.toString.call(value) === "[object Date]" && !isNaN(value)
+}
+
+export function useModelEditor<T extends object>(
   { modelSetter: [globalModel, setGlobalModel], toggled }: {
-    modelSetter: ModelSetter<T, X>
+    modelSetter: HookedModel<T>
     toggled?: boolean
   }
 ): {
-  content: EditValuePropsMap<T, X>
-  keys: (keyof T)[]
-    control: EditControl,
-    model: DefinedModel<InputModel<T, X>>
+  map: HookedMap<T>
+  control: EditControl
 } {
   const [editToggled, toggleEdit] = useState(toggled ?? false)
 
@@ -33,8 +39,8 @@ export function useModelEditor<T extends Model, X extends '' | keyof T = ''>(
   )
 
   const setFactory = useCallback(
-    (propKey: keyof InputModel<T, X>) => useCallback(
-      (value: InputModel<T, X>[typeof propKey]) => setModel(
+    (propKey: keyof T) => useCallback(
+      (value: T[typeof propKey]) => setModel(
         state => ({
           ...state,
           [propKey]: value
@@ -45,27 +51,25 @@ export function useModelEditor<T extends Model, X extends '' | keyof T = ''>(
     [setModel]
   )
 
-  const content: Partial<EditValuePropsMap<T, X>> = {}
-  const contentKeys: (keyof typeof model)[] = []
-  for (const ukey in model) {
-    const key = ukey as keyof typeof model
-    contentKeys.push(key)
-    content[key] = {
-      value: model[key],
-      set: setFactory(key)
-    }
+  const map: Partial<HookedMap<T>> = {}
+  for (const key in model) {
+    const node = model[key]
+    if (!isSimpleValue(node)) continue
+    node
+    map[key] = [
+      node,
+      setFactory(key)
+    ] as typeof node extends SimpleValue ? HookedValue<typeof node> : never
   }
 
   return {
-    content: content as EditValuePropsMap<T, X>,
-    keys: contentKeys,
+    map: map as HookedMap<T>,
     control: {
       editToggled,
       toggleEdit,
       revert,
       save,
       isTouched
-    },
-    model
+    }
   }
 }

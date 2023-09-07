@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
-import { simpleEditToggleFactory } from "../editable/factory.EditToggle";
+import { entoggleValueEdit } from "../editable/entoggle";
 
 const icons = {
   'location-pin': icon({ name: 'location-pin' }),
@@ -21,7 +21,7 @@ export function isIconicKey(name: string): name is keyof typeof icons {
   return name in icons
 }
 
-export function SelectIcon({ value, set }: EditValueProps<string>) {
+export function SelectIcon({ state: [value, set] }: StateProp<string>) {
   const selected = isIconicKey(value) ? icons[value].iconName : 'none'
   return (
     <select value={selected} onChange={e => set(e.target.value)}>
@@ -44,4 +44,4 @@ export function DisplayIcon({ display }: { display: string }) {
   </div>
 }
 
-export const EditIconToggle = simpleEditToggleFactory(SelectIcon, DisplayIcon)
+export const EditIconToggle = entoggleValueEdit({Edit:SelectIcon, Display:DisplayIcon})

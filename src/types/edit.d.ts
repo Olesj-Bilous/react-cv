@@ -10,6 +10,14 @@ interface EditableContext {
 
 type BareModel<T extends object = Model> = Omit<ModelType<T & Model>, 'id'>
 
+type StrippedModel<T extends object = Model> = {
+  [K in keyof T as T[K] extends Model ? never : K]: T[K]
+}
+
+type EditModel<T extends object = Model> = BareModel<StrippedModel<T>>
+
+type EditOrderedModel<T extends object = Model> = Omit<EditModel<T>, 'order'>
+
 type SetModel<T extends Model, X extends '' | keyof T = ''> = Omit<BareModel<T>, X>
 
 type DateToStringConversion<S> = S extends Date ? string : S
@@ -62,16 +70,16 @@ type HookedValue<T> = [
 ]
 
 type HookedMap<T> = {
-  [Key in keyof T]: T[Key] extends object ? never : HookedValue<T[Key]>
+  [Key in keyof T]-?: T[Key] extends SimpleValue ? HookedValue<T[Key]> : never
 }
 
 type DeepHookedMap<T> = {
-  [Key in keyof T]: T[Key] extends object ? HookedMap<T[Key]> : HookedValue<T[Key]>
+  [Key in keyof T]: T[Key] extends SimpleValue ? HookedValue<T[Key]> : HookedMap<T[Key]>
 }
 
 interface HookedEditToggle<E, D = E> {
   edit: {
-    hook: E extends object ? HookedMap<E> : HookedValue<E>
+    hook: E extends SimpleValue ? HookedValue<E> : HookedMap<E>
   }
   display: D
 }
@@ -81,4 +89,8 @@ type HookedEditMap<
   D extends Record<keyof E, any> = E
 > = {
   [Key in keyof E]: HookedEditToggle<E[Key], D[Key]>
+}
+
+interface StateProp <T> {
+  state: HookedValue<T>
 }

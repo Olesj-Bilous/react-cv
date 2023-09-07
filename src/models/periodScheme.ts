@@ -16,8 +16,7 @@ export const periodDefaults = (): Required<PeriodSet> => ({
   subtitle: '',
   introduction: '',
   startDate: new Date(),
-  endDate: new Date(),
-  toPresent: false
+  endDate: new Date()
 })
 
 export const toPeriodEdit = ({ startDate, endDate, ...rest }: Required<PeriodSet>): PeriodEdit => ({
@@ -38,14 +37,13 @@ export const toPeriodDisplay = (
     present: string;
   },
   formatOptions: Intl.DateTimeFormatOptions
-) => ({ startDate, endDate, toPresent, ...header }: PeriodSet
+) => ({ startDate, endDate, ...header }: PeriodSet
 ): PeriodDisplay => ({
-  ...header,
   period: displayPeriod(settings, formatOptions, {
     startDate: startDate,
-    endDate: endDate,
-    toPresent: toPresent
-  })
+    endDate: endDate
+  }),
+  ...header
 })
 
 export const periodScheme = (settings: {
@@ -56,4 +54,24 @@ export const periodScheme = (settings: {
   edit: toPeriodEdit,
   accept: acceptPeriodEdit,
   display: toPeriodDisplay(settings, formatOptions)
+})
+
+export const iconicItemScheme = initScheme({
+  defaults: () => ({
+    icon: '',
+    item: ''
+  }),
+  edit: model => model,
+  accept: model => model,
+  display: model => model
+})
+
+export const ratedSkillScheme = initScheme({
+  defaults: () => ({
+    skill: '',
+    rating: 0
+  }),
+  edit: model => model,
+  accept: model => model,
+  display: model => model
 })

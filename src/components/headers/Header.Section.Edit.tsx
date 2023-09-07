@@ -1,13 +1,15 @@
 import { useZustand } from "../../hooks/useZustand";
 import { HeaderLevelContext } from "./factory.Header";
 import { EditHeader } from './Header.Edit';
-import { useValueEditor } from '../../hooks/useValueEditor';
 import { Editable } from '../editable/Editable';
+import { useValueEditor } from "../../hooks/useValueEditor";
 
 export function EditSectionHeader({ id }: Model & React.Attributes) {
   const { title } = useZustand(store => store.getHeaderProps('eras', id))
-  const setTitle = useZustand(store => store.eraTitleSetter(id))
-  const { content, control } = useValueEditor(setTitle)
+  const {set} = useZustand(store => store.eraTitleSetter(id))
+  const { content, control } = useValueEditor({
+    globalValue: [title, set]
+  })
 
   return (
     <header>
@@ -15,8 +17,7 @@ export function EditSectionHeader({ id }: Model & React.Attributes) {
         <Editable {...control}>
           <EditHeader {...{
             title: {
-              display: title,
-              edit: content
+              state: content
             }
           }} />
         </Editable>

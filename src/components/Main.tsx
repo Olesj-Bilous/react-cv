@@ -1,5 +1,5 @@
 import { Section } from "./Section"
-import { DateFormatContext } from "./items/Period"
+import { DateFormatContext } from "../contexts/Date.Context"
 import { PeriodFeatures } from "./items/Period.Features"
 import { useZustand } from "../hooks/useZustand"
 import { AddPeriodHeader } from "./headers/Header.Period.Add"

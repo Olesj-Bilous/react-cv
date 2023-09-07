@@ -2,11 +2,13 @@ import { useState, useCallback, useMemo } from 'react'
 
 
 export function useValueEditor<T extends boolean | number | string>(
-  { value: storeValue, set: setStore, toggled }: EditValueProps<T> & {
+  { globalValue: [storeValue, setStore], toggled }: {
+    globalValue: HookedValue<T>
+  } & {
     toggled?: boolean
   }
 ): {
-  content: EditValueProps<T>
+  content: HookedValue<T>
   control: EditControl
 } {
   const [editToggled, toggleEdit] = useState(false)
@@ -29,7 +31,7 @@ export function useValueEditor<T extends boolean | number | string>(
   )
 
   return {
-    content: { value, set: setValue },
+    content: [value, setValue],
     control: {
       editToggled,
       toggleEdit,

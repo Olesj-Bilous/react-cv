@@ -5,7 +5,7 @@ import './style/style.css'
 import { useZustand } from './hooks/useZustand'
 
 import { Profile } from './components/Profile'
-import { DateSettingsContext } from './components/items/Period'
+import { DateSettingsContext } from './contexts/Date.Context'
 import { Main } from './components/Main'
 import { EditProfileHeader } from './components/headers/Header.Profile.Edit'
 import { EditPermissionContext } from './contexts/Editable.Context'

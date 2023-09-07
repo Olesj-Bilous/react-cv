@@ -1,14 +1,18 @@
 import { memo } from 'react'
 import { DisplayText, EditText } from "./EditText"
-import { simpleEditToggleFactory } from '../editable/factory.EditToggle'
+import { entoggleMapEdit } from '../editable/entoggle'
 
-export function EditFullName({ firstName, lastName }: EditValuePropsMap<Model & FullName>) {
+export function EditFullName({ firstName, lastName }: HookedMap<FullName>) {
   return (
     <>
-      <EditText {...firstName} />
-      <EditText {...lastName} />
+      <EditText state={firstName} />
+      <EditText state={lastName} />
     </>
   )
 }
 
-export const EditFullNameToggle = memo(simpleEditToggleFactory(EditFullName, DisplayText))
+export function DisplayFullName({ firstName, lastName }: FullName) {
+  return <>{`${firstName} ${lastName}`}</>
+}
+
+export const EditFullNameToggle = memo(entoggleMapEdit({Edit:EditFullName, Display:DisplayFullName}))

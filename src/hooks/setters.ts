@@ -1,6 +1,7 @@
 import { StoreQueries } from "./queries";
 import { dateToMonthInput, monthInputToDate } from "../utils/dateConverters";
-import { periodScheme } from "../models/periodScheme";
+import { iconicItemScheme, periodScheme, ratedSkillScheme } from "../models/periodScheme";
+import { Scheme } from "../models/initScheme";
 
 export type PeriodSetter = ModelSetter<Period, 'era' | 'order' | 'title'>
 
@@ -107,20 +108,32 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
     },
     formatOptions: Intl.DateTimeFormatOptions
   ) {
-    const control = periodScheme(settings, formatOptions)
+    const scheme = periodScheme(settings, formatOptions)
+    return this.eraEventControl('periods', scheme)
+  },
+  iconicItemControl() {
+    return this.eraEventControl('iconicItems', iconicItemScheme)
+  },
+  ratedSkillControl() {
+    return this.eraEventControl('ratedSkills', ratedSkillScheme)
+  },
+  eraEventControl<K extends 'periods' | 'ratedSkills' | 'iconicItems', E extends object = SetModel<StoredModel<K>>, D extends object = E>(
+    key: K,
+    scheme: Scheme<SetModel<StoredModel<K>>, E, D>
+  ) {
     return {
-      add: ({eraId}: {eraId:string}) => {
+      add: ({ eraId }: { eraId: string }) => {
         return {
-          add: control.add(this.addEraEvent('periods', eraId)),
-          preview: control.preview
+          add: scheme.add(this.addEraEvent(key, eraId)),
+          preview: scheme.preview
         }
       },
       set: ({ id }: Model) => {
-        const getter = () => get().getModel('periods', id)
+        const getter = () => get().getModel(key, id)
         return {
-          set: control.set(this.setModel('periods')(id), getter),
-          preview: control.preview,
-          display: control.display(getter)
+          set: scheme.set(this.setModel(key)(id), getter),
+          preview: scheme.preview,
+          display: scheme.display(getter)
         }
       }
     }

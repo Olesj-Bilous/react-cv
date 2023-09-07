@@ -25,9 +25,8 @@ interface EraEvent extends OrderedModel {
 }
 
 interface PeriodProps {
-  startDate: Date
+  startDate?: Date
   endDate?: Date
-  toPresent?: boolean
 }
 
 interface HeaderProps {

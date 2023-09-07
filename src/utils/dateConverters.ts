@@ -22,12 +22,11 @@ export function displayPeriod(
     locales: Intl.LocalesArgument, present: string
   },
   formatOptions: Intl.DateTimeFormatOptions,
-  { startDate, endDate, toPresent }: PeriodProps
+  { startDate, endDate }: PeriodProps
 ) {
-  const end = (toPresent && present)
-    || (endDate && displayMonth(endDate, locales, formatOptions))
-
-  return `${displayMonth(startDate, locales, formatOptions)}${end ? ` - ${end}` : ''}`
+  const firstDate = startDate ?? endDate
+  const tail = startDate && endDate ? displayMonth(endDate, locales, formatOptions) : present
+  return `${firstDate && displayMonth(firstDate, locales, formatOptions)}${tail ? ` - ${tail}` : ''}`
 }
 
 export function displayMonth(date: Date, locales: Intl.LocalesArgument, formatOptions: Intl.DateTimeFormatOptions) {

@@ -1,7 +1,7 @@
 import { createContext } from "react";
-import { contextFactory } from "./factory.Context";
+import { defineContext } from "./factory.Context";
 
-export const [EditPermissionContext, useEditPermissionContext] = contextFactory<{ allowEdit: boolean }>('EditPermission', 'allowEdit')
+export const [EditPermissionContext, useEditPermissionContext] = defineContext<{ allowEdit: boolean }>('EditPermission', 'allowEdit')
 
 export interface EditableContext {
   editToggled: boolean
@@ -11,4 +11,4 @@ export interface EditableContext {
   save: () => void
 }
 
-export const [EditableContext, useEditableContext] = contextFactory<EditableContext>('Editable')
+export const [EditableContext, useEditableContext] = defineContext<EditableContext>('Editable')

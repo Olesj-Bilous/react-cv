@@ -1,10 +1,11 @@
 import { useZustand } from "../hooks/useZustand"
 import { EditIconicItem, AddIconicItem, IconicItemControl } from "./items/IconicItem"
-import { DateFormatContext } from "./items/Period"
+import { DateFormatContext } from "../contexts/Date.Context"
 import { EditPeriodHeader } from "./headers/Header.Period.Edit"
 import { AddPeriodHeader } from "./headers/Header.Period.Add"
 import { EditRatedSkill, AddRatedSkill } from "./items/RatedSkill"
 import { Section } from "./Section"
+import { RatingScaleContext } from "../contexts/Rating.Context"
 
 
 export interface ProfileSections {
@@ -65,14 +66,16 @@ export function Profile() {
   }
 
   return (
-    <div className="profile">
-      <DateFormatContext.Provider value={{
-        formatOptions: {
-          dateStyle: 'short'
-        }
-      }}>
+    <DateFormatContext.Provider value={{
+      formatOptions: {
+        dateStyle: 'short'
+      }
+    }}>
+      <RatingScaleContext.Provider value={{scale:5}}>
+        <div className="profile">
           {content}
-      </DateFormatContext.Provider>
-    </div>
+        </div>
+      </RatingScaleContext.Provider>
+    </DateFormatContext.Provider>
   )
 }

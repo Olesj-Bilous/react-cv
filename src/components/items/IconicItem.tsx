@@ -1,73 +1,52 @@
 import { Editable } from "../editable/Editable";
 import { useZustand } from "../../hooks/useZustand";
-import { useModelEditor } from "../../hooks/useModelEditor";
 import { EditContactToggle } from "../primitives/EditContactText";
 import { EditIconToggle } from "../primitives/EditIcon";
+import { useModelEditor } from "../../hooks/useModelEditor";
 
 export function EditIconicItem({ id }: Model) {
-  const model = useZustand(store => store.getModel('iconicItems', id))
-  const set = useZustand(store => store.setModel('iconicItems')(id))
-  const { content, control } = useModelEditor<IconicItem, 'era'|'order'>({
-    modelSetter: [
-      model, set
-    ]
-  })
+  const { set } = useZustand(store => store.iconicItemControl().set({ id }))
 
-  const { icon, item } = model
-  const { icon: setIcon, item: setItem } = content
+  const { control, map } = useModelEditor({
+    modelSetter: set
+  })
 
   return <IconicItemControl {...{
     control,
-    icon: {
-      display: icon,
-      edit: setIcon
-    },
-    item: {
-      display: item,
-      edit: setItem
-    }
+    map
   }} />
 }
 
 export function AddIconicItem({ eraId }: { eraId: string }) {
-  const setter = useZustand(store => store.iconicItemAdder(eraId))
-  const {
-    control,
-    content: { icon, item }
-  } = useModelEditor({ modelSetter: setter,
-    toggled: true })
+  const { add } = useZustand(store => store.iconicItemControl().add({ eraId }))
+  
+  const { control, map } = useModelEditor({
+    modelSetter: add,
+    toggled: true
+  })
   
   return <IconicItemControl {...{
     create: true,
     control,
-    icon: {
-      display: icon.value,
-      edit: icon
-    },
-    item: {
-      display: item.value,
-      edit: item
-    }
+    map
   }} />
 }
 
-export function IconicItemControl({ icon, item, control, create }: {
+export interface IconicItemSet { icon: string, item: string }
+
+export function IconicItemControl({ control, map: { icon, item }, create }: {
   control: EditControl
-  icon: {
-    display: string
-    edit: EditValueProps<string>
-  }
-  item: EditToggleProp<string>
+  map: DeepHookedMap<IconicItemSet>
   create?: boolean
 }) {
   return (
     <Editable {...{ ...control, create }}>
       <div className="iconic">
         <div className="icon-ctn">
-          <EditIconToggle {...icon} />
+          <EditIconToggle state={icon} />
         </div>
         <div className="item">
-          <EditContactToggle {...item} />
+          <EditContactToggle state={item} />
         </div>
       </div>
     </Editable>

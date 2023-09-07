@@ -1,7 +1,7 @@
 import { createElement, memo, FC } from 'react'
-import { contextFactory } from '../../contexts/factory.Context'
+import { defineContext } from '../../contexts/factory.Context'
 
-export const [ HeaderLevelContext, useHeaderLevelContext ] = contextFactory<{ level: 1 | 2 | 3 | 4 }>('HeaderLevel', 'level')
+export const [ HeaderLevelContext, useHeaderLevelContext ] = defineContext<{ level: 1 | 2 | 3 | 4 }>('HeaderLevel', 'level')
 
 export const Hn = memo(({ n, children }: {
   n: 1 | 2 | 3 | 4 | 5,

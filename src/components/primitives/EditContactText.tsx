@@ -1,5 +1,5 @@
 import { isUrl, isEmailAddress, isPhoneNumber } from "../../utils/checks/stringRefinery";
-import { simpleEditToggleFactory } from "../editable/factory.EditToggle";
+import { entoggleValueEdit } from "../editable/entoggle";
 import { EditText } from "./EditText";
 
 export function ContactText({ display }: { display: string }) {
@@ -15,4 +15,7 @@ export function ContactText({ display }: { display: string }) {
   return <>{display}</>
 }
 
-export const EditContactToggle = simpleEditToggleFactory(EditText, ContactText)
+export const EditContactToggle = entoggleValueEdit({
+  Edit: EditText,
+  Display: ContactText
+})
