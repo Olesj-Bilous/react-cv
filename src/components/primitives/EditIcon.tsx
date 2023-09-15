@@ -25,7 +25,7 @@ export function SelectIcon({ state: [value, set] }: StateProp<string>) {
   const selected = isIconicKey(value) ? icons[value].iconName : 'none'
   return (
     <select value={selected} onChange={e => set(e.target.value)}>
-      <option>--none--</option>
+      <option value="none">--none--</option>
       {
         Object.values(icons).map(item => (
           <option value={item.iconName} key={item.iconName}>

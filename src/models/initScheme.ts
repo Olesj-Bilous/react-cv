@@ -5,8 +5,8 @@ export interface SchemeArgs<
   E extends object = T,
   D extends object = E
 > {
-  defaults: () => Required<T>
-  edit: (t: Required<T>) => E
+  defaults: () => T
+  edit: (t: T) => E
   accept: (e: Partial<E>) => Partial<T>
   display: (t: T) => D
 }

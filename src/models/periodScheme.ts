@@ -11,12 +11,12 @@ export type PeriodEdit = Required<HeaderProps & PeriodEditProps>
 
 export type PeriodDisplay = HeaderProps & { period: string }
 
-export const periodDefaults = (): Required<PeriodSet> => ({
+export const periodDefaults = (): PeriodSet => ({
   title: '',
-  subtitle: '',
-  introduction: '',
-  startDate: new Date(),
-  endDate: new Date()
+  subtitle: undefined,
+  introduction: undefined,
+  startDate: undefined,
+  endDate: undefined
 })
 
 export const toPeriodEdit = ({ startDate, endDate, ...rest }: Required<PeriodSet>): PeriodEdit => ({
@@ -51,8 +51,8 @@ export const periodScheme = (settings: {
   present: string;
 }, formatOptions: Intl.DateTimeFormatOptions) => initScheme({
   defaults: periodDefaults,
-  edit: toPeriodEdit,
-  accept: acceptPeriodEdit,
+  edit: model => model,
+  accept: model => model,
   display: toPeriodDisplay(settings, formatOptions)
 })
 

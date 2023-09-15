@@ -25,8 +25,8 @@ export function displayPeriod(
   { startDate, endDate }: PeriodProps
 ) {
   const firstDate = startDate ?? endDate
-  const tail = startDate && endDate ? displayMonth(endDate, locales, formatOptions) : present
-  return `${firstDate && displayMonth(firstDate, locales, formatOptions)}${tail ? ` - ${tail}` : ''}`
+  const tail = startDate ? endDate ? displayMonth(endDate, locales, formatOptions) : present : ''
+  return `${firstDate && displayMonth(firstDate, locales, formatOptions)}${tail ? ` -${String.fromCharCode(0x00A0)}${tail}` : ''}`
 }
 
 export function displayMonth(date: Date, locales: Intl.LocalesArgument, formatOptions: Intl.DateTimeFormatOptions) {
@@ -41,7 +41,7 @@ export function displayMonth(date: Date, locales: Intl.LocalesArgument, formatOp
 
 export function dateToMonthInput(date: Date): string {
   const month = date.getMonth() + 1
-  return `${date.getFullYear()}-${month < 10 && 0}${month}`
+  return `${date.getFullYear()}-${month < 10 ? 0 : ''}${month}`
 }
 
 export function monthInputToDate(input?: string) {

@@ -37,25 +37,6 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
       this.setModel('profiles')(id)
     ]
   },
-  periodSetter(id: string): ModelSetter<Period, 'order' | 'era'> {
-    const hook = this.setModel<'periods', 'order' | 'era'>('periods')(id)
-    const { startDate, endDate, toPresent, title, subtitle, introduction } = get().getModel('periods', id)
-    return [
-      {
-        startDate: dateToMonthInput(startDate),
-        endDate: dateToMonthInput(endDate ?? new Date()),
-        toPresent: toPresent ?? false,
-        title,
-        subtitle: subtitle ?? '',
-        introduction: introduction ?? ''
-      },
-      partial => hook({
-        ...partial,
-        startDate: monthInputToDate(partial.startDate),
-        endDate: monthInputToDate(partial.endDate)
-      })
-    ]
-  },
   addEraEvent<K extends 'periods' | 'ratedSkills' | 'iconicItems', X extends '' | keyof StoredModel<K> = ''>(eventType: K, eraId: string) {
     return (partial: Partial<SetModel<StoredModel<K>, X>>) => this.addModel<K, X>(eventType)({
       ...partial,
@@ -80,25 +61,6 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
         rating: 0
       },
       hook
-    ]
-  },
-  addPeriod(eraId: string): ModelSetter<Period, 'order' | 'era'> {
-    const hook = this.addEraEvent<'periods', 'order' | 'era'>('periods', eraId)
-    const [startDate, endDate] = [dateToMonthInput(new Date()), dateToMonthInput(new Date())]
-    return [
-      {
-        startDate,
-        endDate,
-        toPresent: false,
-        title: '',
-        subtitle: '',
-        introduction: ''
-      },
-      partial => hook({
-        ...partial,
-        startDate: monthInputToDate(partial.startDate),
-        endDate: monthInputToDate(partial.endDate)
-      })
     ]
   },
   periodControl(

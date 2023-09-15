@@ -7,12 +7,11 @@ export function OptionalMonthInput({ state: [date, setDate] }: {
   const [disabled, setDisabled] = useState(!date)
   const disable = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      const enabled = e.target.checked
-      if (enabled)
+      if (!disabled)
         setDate(undefined)
-      setDisabled(enabled)
+      setDisabled(!disabled)
     },
-    []
+    [disabled]
   )
   return <div className="month-input">
     <MonthInput state={[date ?? new Date(), setDate]} disabled={disabled} />
@@ -24,6 +23,7 @@ export function MonthInput({ state: [date, setDate], disabled }: {
   state: HookedValue<Date>
   disabled?: boolean
 }) {
+  const hm = dateToMonthInput(date)
   const [month, setMonth] = [
     dateToMonthInput(date),
     useCallback(

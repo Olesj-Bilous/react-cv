@@ -47,7 +47,6 @@ export const initStore: ModelStore = {
         subtitle: 'Local farm',
         introduction: 'This is the life I been leadin\' at that farm hitherto',
         startDate: new Date(1955, 3),
-        toPresent: true,
         era: '1',
         order: 0
       },
