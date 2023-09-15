@@ -44,11 +44,16 @@ export const EditControl = memo(
     
     return (
       <div className="control">
-        <button onClick={() => toggleEdit(!editToggled)}>
-          {editToggled ? cancellationIcon : <FontAwesomeIcon icon={ edit } />}
-        </button>
+        {create && <button onClick={() => toggleEdit(!editToggled)}>
+          {editToggled ? <FontAwesomeIcon icon={preview} /> : <FontAwesomeIcon icon={ edit } />}
+        </button>}
         {
           editToggled && <>
+            {
+              !create && <button onClick={() => toggleEdit(!editToggled)}>
+                {editToggled ? <FontAwesomeIcon icon={cancel} /> : <FontAwesomeIcon icon={edit} />}
+              </button>
+            }
             <button disabled={!create && !isTouched} onClick={saveAction}>
               <FontAwesomeIcon icon={saveIconDef} />
             </button>

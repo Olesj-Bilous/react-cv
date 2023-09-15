@@ -28,7 +28,7 @@ function App() {
       <EditPermissionContext.Provider value={{ allowEdit }}>
         <button onClick={() => setEditAllowance(!allowEdit)}>Toggle edit</button>
         <button onClick={() => window.print()}>Export to PDF</button>
-        <div id="document">
+        <div id="document" className={allowEdit ? 'edit-allowed' : ''}>
           <EditProfileHeader {...{
             id,
             img

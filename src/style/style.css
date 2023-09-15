@@ -1,19 +1,33 @@
 @media print {
+  #root {
+    padding: 0;
+  }
   #root > *:not(#document) {
     display: none;
   }
 }
 #root #document {
   box-sizing: content-box;
-  height: 297mm;
-  width: 210mm;
+  width: 595pt;
+  font-size: 12pt;
+  padding: 0 3rem;
   background-color: #2a2a2a;
-  padding: 0.6rem 1.2rem;
+}
+#root #document:not(.edit-allowed) {
+  height: 942pt;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#root #document.edit-allowed .editable:not(.editing):not(.creating):hover {
+  cursor: url(pencil-cursor.svg) 1 16, pointer;
+  box-shadow: 2px 2px 2px 1px slategrey, inset 2px 2px 2px 1px slategrey;
 }
 #root #document textarea {
-  margin: auto;
-  width: 80%;
+  width: 95%;
   vertical-align: top;
+  font-family: inherit;
+  font-size: inherit;
 }
 #root #document section > ul {
   list-style: none;
@@ -61,15 +75,8 @@
 }
 #root #document .profile-body {
   display: grid;
-  gap: 1.4rem;
-}
-#root #document .profile-body .profile {
-  grid-row: 1;
-  grid-column: 1/1;
-}
-#root #document .profile-body main {
-  grid-row: 1;
-  grid-column: 2/10;
+  gap: 2rem;
+  grid-template-columns: 30% 1fr;
 }
 #root #document .img {
   display: flex;
@@ -80,6 +87,11 @@
 #root #document .iconic, #root #document .rated-skill, #root #document .head {
   display: flex;
   flex-direction: row;
+}
+#root #document .profile .editable.editing .iconic,
+#root #document .profile .editable.editing .rated-skill,
+#root #document .profile .editable.editing .head {
+  flex-direction: column;
 }
 #root #document > header .head {
   gap: 2rem;
@@ -99,4 +111,7 @@
 }
 #root #document .head {
   align-items: center;
+}
+#root #document .period > .head > .period {
+  text-align: right;
 }/*# sourceMappingURL=style.css.map */

@@ -1,5 +1,6 @@
 @media print {	
 	#root {
+		padding: 0;
 		> *:not(#document) {
 			display: none
 		}
@@ -8,15 +9,32 @@
 
 #root #document {
 	box-sizing: content-box;
-	height: 297mm;
-	width: 210mm;
+	width: 595pt;
+	font-size: 12pt;
+	padding: 0 3rem;
+	
 	background-color: #2a2a2a;
-	padding: 0.6rem 1.2rem;
+
+	&:not(.edit-allowed) {
+		height: 942pt; // should be this value - 100 but for some reason that leaves a blank space below the pdf
+		display: flex;
+		flex-direction: column;
+		justify-content: center;}
+
+	&.edit-allowed {
+		.editable {
+			&:not(.editing):not(.creating):hover {
+				cursor: url(pencil-cursor.svg) 1 16, pointer;
+				box-shadow: 2px 2px 2px 1px slategrey, inset 2px 2px 2px 1px slategrey;
+			}
+		}
+	}
 
 	textarea {
-		margin: auto;
-		width: 80%;
+		width: 95%;
 		vertical-align: top;
+		font-family: inherit;
+		font-size: inherit;
 	}
 
 	section {
@@ -79,17 +97,9 @@
 
 	.profile-body {
 		display: grid;
-		gap: 1.4rem;
+		gap: 2rem;
+		grid-template-columns: 30% 1fr;
 
-		.profile {
-			grid-row: 1;
-			grid-column: 1 / 1;
-		}
-
-		main {
-			grid-row: 1;
-			grid-column: 2 / 10
-		}
 	}
 
 	.img { 
@@ -103,6 +113,14 @@
 	.iconic, .rated-skill, .head {
 		display: flex;
 		flex-direction: row;
+	}
+
+	.profile .editable.editing {
+		.iconic,
+			.rated-skill,
+			.head {
+				flex-direction: column;
+			}
 	}
 
 	> header .head {
@@ -127,6 +145,10 @@
 
 	.head {
 		align-items: center;
+	}
+
+	.period > .head > .period {
+		text-align: right;
 	}
 }
  
