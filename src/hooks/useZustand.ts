@@ -19,7 +19,15 @@ export const useZustand = create<ModelStore & StoreComputed & StoreQueries & Sto
         () => localStorage, {
           reviver: (key, value) => typeof value !== 'string' || !isISODateString(value) ? value : new Date(value)
         }
-      )
+      ),
+      onRehydrateStorage: (state) => {
+        console.log(state)
+        return (state, error) => {
+          if (error)
+            console.log(error)
+          console.log(state)
+        }
+      }
     }
   )
 )

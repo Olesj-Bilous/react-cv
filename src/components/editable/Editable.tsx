@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 export const Editable = memo(
-  ({ children, create, editToggled, toggleEdit, ...ctrlProps }: EditableContext & {
+  ({ children, create, editToggled, toggleEdit, deleteM, ...ctrlProps }: EditableContext & {
     children?: React.ReactNode
     create?: boolean
+    deleteM?: () => void
   }) => {
     const { allowEdit } = useEditPermissionContext()
     const [show, setShow] = useState(!create)
@@ -27,7 +28,7 @@ export const Editable = memo(
             <div className="content">
               {children}
             </div>
-            {allowEdit && <EditControl create={create} hide={() => setShow(false)} />}
+            {allowEdit && <EditControl create={create} deleteM={deleteM} hide={() => setShow(false)} />}
           </>
           : allowEdit && <button onClick={() => setShow(true)}>
             <FontAwesomeIcon icon={icon({name: 'plus'})} />  

@@ -25,8 +25,14 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
       }))
     }
   },
-  addModel<K extends keyof ModelStore, X extends '' | keyof StoredModel<K> = ''>(modelType: K, increment?: number) {
-    const count = get()[modelType].count + (increment ?? 1)
+  deleteModel<K extends keyof ModelStore>(modelType: K) {
+    return (id: string) => set(store => {
+      delete store[modelType].models[id]
+      return store
+    })
+  },
+  addModel<K extends keyof ModelStore, X extends '' | keyof StoredModel<K> = ''>(modelType: K) {
+    const count = get()[modelType].count + 1
     const hook = this.setModel<K, X>(modelType)(count.toString())
     return hook
   },
@@ -42,16 +48,6 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
       ...partial,
       era: eraId
     })
-  },
-  iconicItemAdder(eraId: string): ModelSetter<IconicItem, 'order' | 'era'> {
-    const hook = this.addEraEvent<'iconicItems', 'order' | 'era'>('iconicItems', eraId)
-    return [
-      {
-        icon: '',
-        item: ''
-      },
-      hook
-    ]
   },
   ratedSkillAdder(eraId: string): ModelSetter<RatedSkill, 'order' | 'era'> {
     const hook = this.addEraEvent<'ratedSkills', 'order' | 'era'>('ratedSkills', eraId)

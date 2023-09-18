@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import './style/style.css'
 
@@ -9,8 +9,8 @@ import { DateSettingsContext } from './contexts/Date.Context'
 import { Main } from './components/Main'
 import { EditProfileHeader } from './components/headers/Header.Profile.Edit'
 import { EditPermissionContext } from './contexts/Editable.Context'
-
 function App() {
+
   const {
     id,
     img

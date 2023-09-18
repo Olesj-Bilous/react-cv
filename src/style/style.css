@@ -32,6 +32,10 @@
 #root #document section > ul {
   list-style: none;
   padding-inline-start: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3pt;
 }
 #root #document article > ul {
   list-style: disc;

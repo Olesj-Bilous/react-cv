@@ -27,43 +27,41 @@ const cancel = icon({ name: 'xmark' })
 const edit = icon({ name: 'pencil' })
 const undo = icon({ name: 'undo' })
 const saveIconDef = icon({ name: 'check' })
+const deleteIconDef = icon({name: 'trash'})
 
 export const EditControl = memo(
-  ({ create, hide }: { create?: boolean, hide?: () => void }) => {
+  ({ create, hide, deleteM }: { create?: boolean, hide?: () => void, deleteM?: () => void }) => {
     const { editToggled, toggleEdit, isTouched, save, revert } = useEditableContext()
     
-    const cancelIcon = <FontAwesomeIcon icon={cancel} />
-
-    const cancellationIcon = create
-      ? <FontAwesomeIcon icon={preview} />
-      : cancelIcon
-    
-    const revertIcon = <FontAwesomeIcon icon={undo} />
+    const Cancel = <FontAwesomeIcon icon={cancel} />
 
     const saveAction = create ? () => { save(); revert(); hide && hide() } : save
     
     return (
       <div className="control">
         {create && <button onClick={() => toggleEdit(!editToggled)}>
-          {editToggled ? <FontAwesomeIcon icon={preview} /> : <FontAwesomeIcon icon={ edit } />}
+          {editToggled ? <FontAwesomeIcon icon={preview} /> : <FontAwesomeIcon icon={edit} />}
         </button>}
         {
           editToggled && <>
             {
-              !create && <button onClick={() => toggleEdit(!editToggled)}>
-                {editToggled ? <FontAwesomeIcon icon={cancel} /> : <FontAwesomeIcon icon={edit} />}
+              !create && <button onClick={() => toggleEdit(false)}>
+                {Cancel}
               </button>
             }
             <button disabled={!create && !isTouched} onClick={saveAction}>
               <FontAwesomeIcon icon={saveIconDef} />
             </button>
             <button disabled={!isTouched} onClick={revert}>
-              {revertIcon}
+              <FontAwesomeIcon icon={undo} />
             </button>
+            {!create && <button onClick={deleteM}>
+              <FontAwesomeIcon icon={deleteIconDef} />
+            </button>}
           </>
         }
         {
-          create && hide && <button onClick={hide}>{ cancelIcon }</button>
+          create && hide && <button onClick={hide}>{ Cancel }</button>
         }
       </div>
     )
