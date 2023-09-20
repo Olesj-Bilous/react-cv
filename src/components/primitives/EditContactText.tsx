@@ -1,6 +1,6 @@
 import { isUrl, isEmailAddress, isPhoneNumber } from "../../utils/checks/stringRefinery";
 import { entoggleValueEdit } from "../editable/entoggle";
-import { EditText, EditTextarea } from "./EditText";
+import { DisplayText, EditText, EditTextarea } from "./EditText";
 
 export function ContactText({ display }: { display: string }) {
   if (isEmailAddress(display)) {
@@ -14,13 +14,3 @@ export function ContactText({ display }: { display: string }) {
   }
   return <>{display}</>
 }
-
-export const EditContactToggle = entoggleValueEdit({
-  Edit: EditText,
-  Display: ContactText
-})
-
-export const EditContactareaToggle = entoggleValueEdit({
-  Edit: EditTextarea,
-  Display: ContactText
-})

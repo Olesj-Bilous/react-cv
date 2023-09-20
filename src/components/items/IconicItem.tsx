@@ -1,8 +1,8 @@
 import { Editable } from "../editable/Editable";
 import { useZustand } from "../../hooks/useZustand";
-import { EditContactToggle, EditContactareaToggle } from "../primitives/EditContactText";
 import { EditIconToggle } from "../primitives/EditIcon";
 import { useModelEditor } from "../../hooks/useModelEditor";
+import { EditTextareaToggle } from "../primitives/EditText";
 
 export function EditIconicItem({ id }: Model) {
   const { set } = useZustand(store => store.iconicItemControl().set({ id }))
@@ -46,7 +46,7 @@ export function IconicItemControl({ control, map: { icon, item }, create }: {
           <EditIconToggle state={icon} />
         </div>
         <div className="item">
-          <EditContactareaToggle state={item} />
+          <EditTextareaToggle state={item} />
         </div>
       </div>
     </Editable>

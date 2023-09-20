@@ -1,8 +1,33 @@
-import { FC, memo } from 'react'
+import { FC, Fragment, memo } from 'react'
 import { editorFactory } from './factory.Editor'
 import { entoggleValueEdit } from '../editable/entoggle'
+import { isUrl } from '../../utils/checks/stringRefinery'
+import { ContactText } from './EditContactText'
 
-export const DisplayText = memo(({ display }: { display?: string }) => <>{display}</>)
+export const DisplayText = memo(({ display }: { display?: string }) => {
+  if (!display) return <></>
+  //const matches = display.matchAll(/((\([\w ]+\))(\[[\S]+\]))/g)
+
+  const left = display.split('(')
+  const blocks = [<ContactText key="0" display={left[0]!}/>]
+  for (let i = 1; i < left.length; i++) {
+    const middle = left[i]?.split(')[')
+    if (middle) {
+      const text = middle?.[0]?.trim()
+      if (text) {
+        const right = middle[1]?.split(']')
+        if (right?.[1]) {
+          if (isUrl(right[0]!)) {
+            blocks.push(<Fragment key={i}><a href={right[0]}>{text}</a>{right[1]}</Fragment>)
+            continue
+          }
+        }
+      }
+    }
+    blocks.push(<Fragment key={i}>{left[i]}</Fragment>)
+  }
+  return <>{blocks}</>
+})
 
 export const EditText = memo(editorFactory({ element: 'input', type: 'text' }))
 

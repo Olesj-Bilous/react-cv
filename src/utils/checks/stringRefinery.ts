@@ -7,7 +7,7 @@ export const isEmailAddress = (value: string) =>
     .test(value)
 
 export const isUrl = (value: string) =>
-  /^(?:http(?:s)?:\/\/)?(?:www\.)?[\w.\-]{2,256}\.[a-z]{2,4}\/?[\w\-@:%+~#=?&]*$/i
+  /^(?:http(?:s)?:\/\/)?(?:www\.)?[\w.\-]{2,256}\.[a-z]{2,4}\/?[\/\w\-@:%+~#=?&]*$/i
     .test(value)
 
 export const clearWhitespace = (value: string) => value.replaceAll(/\s/g, '')
