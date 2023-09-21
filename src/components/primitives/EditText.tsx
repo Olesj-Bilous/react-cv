@@ -24,7 +24,7 @@ export const DisplayText = memo(({ display }: { display?: string }) => {
         }
       }
     }
-    blocks.push(<Fragment key={i}>{left[i]}</Fragment>)
+    blocks.push(<Fragment key={i}>{`(${left[i]}`}</Fragment>)
   }
   return <>{blocks}</>
 })
