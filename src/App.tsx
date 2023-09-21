@@ -27,7 +27,7 @@ function App() {
     <DateSettingsContext.Provider value={dateSettings}>
       <EditPermissionContext.Provider value={{ allowEdit }}>
         <button onClick={() => setEditAllowance(!allowEdit)}>Toggle edit</button>
-        <button onClick={() => window.print()}>Export to PDF</button>
+        <button disabled={allowEdit} onClick={() => { window.print()}}>Export to PDF</button>
         <div id="document" className={allowEdit ? 'edit-allowed' : ''}>
           <EditProfileHeader {...{
             id,
