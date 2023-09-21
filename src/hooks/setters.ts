@@ -25,10 +25,10 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
       }))
     }
   },
-  deleteModel<K extends keyof ModelStore>(modelType: K) {
-    return (id: string) => set(store => {
+  deleteModel<K extends keyof ModelStore>(modelType: K, id: string) {
+    return () => set(store => {
       delete store[modelType].models[id]
-      return store
+      return { ...store }
     })
   },
   addModel<K extends keyof ModelStore, X extends '' | keyof StoredModel<K> = ''>(modelType: K) {

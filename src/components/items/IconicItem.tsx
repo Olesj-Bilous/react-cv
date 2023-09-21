@@ -6,6 +6,7 @@ import { EditTextareaToggle } from "../primitives/EditText";
 
 export function EditIconicItem({ id }: Model) {
   const { set } = useZustand(store => store.iconicItemControl().set({ id }))
+  const deleteM = useZustand(store => store.deleteModel('iconicItems', id))
 
   const { control, map } = useModelEditor({
     modelSetter: set
@@ -13,7 +14,8 @@ export function EditIconicItem({ id }: Model) {
 
   return <IconicItemControl {...{
     control,
-    map
+    map,
+    deleteM
   }} />
 }
 
@@ -34,13 +36,14 @@ export function AddIconicItem({ eraId }: { eraId: string }) {
 
 export interface IconicItemSet { icon: string, item: string }
 
-export function IconicItemControl({ control, map: { icon, item }, create }: {
+export function IconicItemControl({ control, map: { icon, item }, create, deleteM }: {
   control: EditControl
   map: DeepHookedMap<IconicItemSet>
   create?: boolean
+  deleteM?: () => void
 }) {
   return (
-    <Editable {...{ ...control, create }}>
+    <Editable {...{ ...control, create, deleteM }}>
       <div className="iconic">
         <div className="icon-ctn">
           <EditIconToggle state={icon} />

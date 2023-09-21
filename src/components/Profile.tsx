@@ -57,7 +57,7 @@ export function Profile() {
     if (props)
       content.push(
         <Section {...{
-          key: `${key}/${i}`,
+          key: `${key}/${props.id}`,
           Component,
           AddComponent,
           ...props
