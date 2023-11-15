@@ -1,7 +1,21 @@
-import { Document, Paragraph, TextRun, HeadingLevel, Packer, ISectionOptions, SectionType } from "docx";
+import { Document, Paragraph, TextRun, HeadingLevel, Packer, ISectionOptions, SectionType, ExternalHyperlink } from "docx";
 import { useZustand } from "../hooks/useZustand";
 import { mapProfileSections } from "../components/Profile";
 import { displayPeriod } from "./dateConverters";
+import { hyperize } from "./hyperize";
+import { scaleRating } from "../components/primitives/EditRating";
+
+function hyperText(text: string) {
+  return hyperize(text, (i, text, url) => url ? new ExternalHyperlink({
+    children: [
+      new TextRun({
+        text,
+        style: "Hyperlink",
+      }),
+    ],
+    link: url
+  }) : new TextRun(text))
+}
 
 function handlePeriod({ title, subtitle, startDate, endDate, dateSettings, dateStyle }: ModelType<Period> & {
   dateSettings: {
@@ -13,28 +27,25 @@ function handlePeriod({ title, subtitle, startDate, endDate, dateSettings, dateS
   children.push(
     new Paragraph({
       heading: HeadingLevel.HEADING_2,
-      children: [new TextRun(title)]
+      children: hyperText(title)
     })
   )
   if (subtitle) {
     children.push(
       new Paragraph({
         heading: HeadingLevel.HEADING_3,
-        children: [new TextRun(subtitle)]
+        children: hyperText(subtitle)
       })
     )
   }
   children.push(
     new Paragraph({
       heading: HeadingLevel.HEADING_4,
-      children: [new TextRun(
-        displayPeriod(
-          dateSettings,
-          {
-            dateStyle
-          },
-          { startDate: startDate, endDate: endDate })
-      )]
+      text: displayPeriod(
+        dateSettings,
+        { dateStyle },
+        { startDate: startDate, endDate: endDate }
+      )
     })
   )
   return children
@@ -46,15 +57,14 @@ export async function exportToDocx(
   }
 ) {
   const state = useZustand.getState()
+
   const profileSections = state.getProfileSections()
   const profileMap = mapProfileSections(profileSections, (key, item): ISectionOptions => {
     const { title } = state.getHeaderProps('eras', item.id)
     const children = [
       new Paragraph({
         heading: HeadingLevel.HEADING_1,
-        children: [
-          new TextRun(title)
-        ]
+        children: hyperText(title)
       })
     ]
     switch (key) {
@@ -70,6 +80,25 @@ export async function exportToDocx(
         break
       }
       case 'ratedSkills': {
+        for (const model of item.items) {
+          const value = state.ratedSkills.models[model.id]
+          if (value) {
+            children.push(
+              new Paragraph({
+                heading: HeadingLevel.HEADING_3,
+                children: hyperText(value.skill)
+              })
+            )
+            const [scale, rating] = scaleRating(value.rating, 5)
+            let stars = ''
+            for (let i = 0; i < scale; i++) {
+              stars += String.fromCharCode(i < rating ? 0x2605 : 0x2606)
+            }
+            children.push(
+              new Paragraph(stars)
+            )
+          }
+        }
         break
       }
       case 'iconicItems': {
@@ -79,10 +108,10 @@ export async function exportToDocx(
             children.push(
               new Paragraph({
                 heading: HeadingLevel.HEADING_3,
-                children: [new TextRun(value.title ?? value.icon)]
+                children: hyperText(value.title ?? value.icon)
               }),
               new Paragraph({
-                children: [new TextRun(value.item)]
+                children: hyperText(value.item)
               })
             )
           }
@@ -104,9 +133,7 @@ export async function exportToDocx(
     main.push(
       new Paragraph({
         heading: HeadingLevel.HEADING_1,
-        children: [
-          new TextRun(title)
-        ]
+        children: hyperText(title)
       })
     )
     for (const periodModel of section.items) {
@@ -116,20 +143,41 @@ export async function exportToDocx(
       )
       if (period.introduction) {
         main.push(new Paragraph({
-          text: period.introduction
+          children: hyperText(period.introduction)
         }))
       }
       main.push(...periodModel.features.map(feat => new Paragraph({
         bullet: {
           level: 0
         },
-        text: state.periodFeatures.models[feat]?.feature
+        children: hyperText(state.periodFeatures.models[feat]?.feature ?? '')
       })))
     }
   }
 
+  const profileProps = state.getHeaderProps('profiles', '0')
+  const header = {
+    children: [
+      new Paragraph({
+        heading: HeadingLevel.TITLE,
+        text: profileProps.title
+      }),
+      new Paragraph({
+        heading: HeadingLevel.HEADING_1,
+        text: profileProps.subtitle
+      })
+    ]
+  }
+  if (profileProps.introduction) {
+    header.children.push(
+      new Paragraph({
+        children: hyperText(profileProps.introduction)
+      })
+    )
+  }
+
   const doc = new Document({
-    sections: [...profileMap, { children: main }]
+    sections: [header, ...profileMap, { children: main }]
   })
   const blob = await Packer.toBlob(doc)
   const url = window.URL.createObjectURL(blob)

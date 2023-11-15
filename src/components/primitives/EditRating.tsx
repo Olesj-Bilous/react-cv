@@ -7,17 +7,19 @@ import { useRatingScaleContext } from "../../contexts/Rating.Context"
 
 const [solid, regular] = [icon({ name: 'star', style: 'solid' }), icon({ name: 'star', style: 'regular' })]
 
+export function scaleRating(rating: number, scale: number): [scale: number, rating: number] {
+  const intScale = Math.ceil(scale)
+  const scaledRating = 0 < rating && rating <= 1 ? Math.ceil(rating * intScale) : 0
+  return [intScale, scaledRating]
+}
+
 export function Rating({ display: rating, set }: {
   display: number
 } & {
   set?: (rating: number) => void
 }) {
   const {scale} = useRatingScaleContext()
-  const [intScale, scaledRating] = useMemo(() => {
-    const intScale = Math.ceil(scale)
-    const scaledRating = 0 < rating && rating <= 1 ? Math.ceil(rating * intScale) : 0
-    return [intScale, scaledRating]
-  }, [rating, scale])
+  const [intScale, scaledRating] = useMemo(() => scaleRating(rating, scale), [rating, scale])
 
   const [preview, setPreview] = useState(scaledRating)
 
