@@ -3,9 +3,9 @@ import { ProfileSections } from '../components/Profile'
 import { sectionEventsByEra } from '../models/sectionEventsByEra'
 
 export const computed = <T extends ModelStore>(get: () => T) => ({
-  getSelectedProfile() {
-    const init : Profile = {id: '0', profession: '', description: '', img: '', firstName: '', lastName: ''}
-    return get().profiles.models['0'] ?? init
+  getSelectedProfile(): Profile {
+    return get().profiles.models['0']
+      ?? { id: '0', profession: '', description: '', img: '', firstName: '', lastName: '' }
   },
   getSelectedEras() {
     const [eras] = filterMap(get().eras.models, era => era.profile === this.getSelectedProfile()?.id)

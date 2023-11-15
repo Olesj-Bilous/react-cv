@@ -51,10 +51,13 @@ interface RatedSkill extends EraEvent {
   skill: string
 }
 
-interface IconicItem extends EraEvent {
+interface IconicItemProps {
   icon: string
   item: string
+  title?: string
 }
+
+interface IconicItem extends EraEvent, IconicItemProps {}
 
 interface Section<I extends Model = Model> extends Model {
   items: I[]

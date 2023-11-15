@@ -1,3 +1,4 @@
+import { IconicItemSet } from "../components/items/IconicItem"
 import { dateToMonthInput, displayPeriod, monthInputToDate } from "../utils/dateConverters"
 import { DeepRequired, initScheme } from "./initScheme"
 
@@ -56,14 +57,21 @@ export const periodScheme = (settings: {
   display: toPeriodDisplay(settings, formatOptions)
 })
 
-export const iconicItemScheme = initScheme({
+const iconicDefaults = {
+  icon: '',
+  item: '',
+  title: ''
+}
+
+export const iconicItemScheme = initScheme<IconicItemProps, IconicItemSet>({
   defaults: () => ({
     icon: '',
-    item: ''
+    item: '',
+    title: ''
   }),
-  edit: model => model,
+  edit: model => Object.assign(iconicDefaults, model),
   accept: model => model,
-  display: model => model
+  display: model => Object.assign(iconicDefaults, model)
 })
 
 export const ratedSkillScheme = initScheme({

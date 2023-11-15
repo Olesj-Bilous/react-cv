@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import './style/style.css'
+import {Buffer} from 'buffer'
 
 import { useZustand } from './hooks/useZustand'
 
@@ -9,6 +10,7 @@ import { DateSettingsContext } from './contexts/Date.Context'
 import { Main } from './components/Main'
 import { EditProfileHeader } from './components/headers/Header.Profile.Edit'
 import { EditPermissionContext } from './contexts/Editable.Context'
+import { exportToDocx } from './utils/exportToDocx'
 function App() {
 
   const {
@@ -26,8 +28,9 @@ function App() {
   return (
     <DateSettingsContext.Provider value={dateSettings}>
       <EditPermissionContext.Provider value={{ allowEdit }}>
-        <button onClick={() => setEditAllowance(!allowEdit)}>Toggle edit</button>
-        <button disabled={allowEdit} onClick={() => { window.print()}}>Export to PDF</button>
+        <button onClick={() => setEditAllowance(!allowEdit)}>toggle edit</button>
+        <button disabled={allowEdit} onClick={() => { window.print() }}>PDF</button>
+        <button onClick={() => exportToDocx(dateSettings)}>docx</button>
         <div id="document" className={allowEdit ? 'edit-allowed' : ''}>
           <EditProfileHeader {...{
             id,

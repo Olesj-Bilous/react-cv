@@ -20,11 +20,12 @@ const components = {
   periods: [EditPeriodHeader, AddPeriodHeader] as [React.FC<Model>, React.FC<{ eraId: string }>]
 }
 
-export function Profile() {
-  const profileSections = useZustand(store => store.getProfileSections())
-  const { iconicItems, periods, ratedSkills } = profileSections
-
-  const content: JSX.Element[] = []
+export function mapProfileSections<T>(
+  sections: ProfileSections,
+  mapping: <K extends keyof ProfileSections>(key: K, item: OrderedSection) => T
+): T[] {
+  const { iconicItems, periods, ratedSkills } = sections
+  const map: T[] = []
   const counters = {
     iconicItems: 0,
     periods: 0,
@@ -32,7 +33,8 @@ export function Profile() {
   }
   while (counters.iconicItems < iconicItems.length
     || counters.periods < periods.length
-    || counters.ratedSkills < ratedSkills.length) {
+    || counters.ratedSkills < ratedSkills.length
+  ) {
     const key = [
       {
         item: iconicItems[counters.iconicItems]?.order ?? Number.POSITIVE_INFINITY,
@@ -48,22 +50,27 @@ export function Profile() {
       (previous, current) => current.item < previous.item
         ? current : previous
     ).key
-    
-    const sections = profileSections[key]
-    const [Component, AddComponent] = components[key]
-
     const i = counters[key]++
-    const props = sections[i]
-    if (props)
-      content.push(
-        <Section {...{
-          key: `${key}/${props.id}`,
-          Component,
-          AddComponent,
-          ...props
-        }} />
-      )
+    const props = sections[key][i]
+    if (props) {
+      const mapped = mapping(key, props)
+      map.push(mapped)
+    }
   }
+  return map
+}
+
+export function Profile() {
+  const profileSections = useZustand(store => store.getProfileSections())
+  const map = mapProfileSections(profileSections, (key, props) => {
+    const [Component, AddComponent] = components[key]
+    return <Section {...{
+      key: `${key}/${(props as OrderedSection).id}`,
+      Component,
+      AddComponent,
+      ...props
+    }} />
+  })
 
   return (
     <DateFormatContext.Provider value={{
@@ -71,9 +78,9 @@ export function Profile() {
         dateStyle: 'short'
       }
     }}>
-      <RatingScaleContext.Provider value={{scale:5}}>
+      <RatingScaleContext.Provider value={{ scale: 5 }}>
         <div className="profile">
-          {content}
+          {map}
         </div>
       </RatingScaleContext.Provider>
     </DateFormatContext.Provider>

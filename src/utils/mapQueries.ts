@@ -15,7 +15,7 @@ export function filterMap<T>(map: KeyMap<T>, filter: (item: T) => boolean) {
   return [positive, negative] as [positive: KeyMap<T>, negative: KeyMap<T>]
 }
 
-export function transformMap<T, V>(map: KeyMap<T>, transform: (item: T) => V) {
+export function transformMap<T, V>(map: KeyMap<T>, transform: (item: T) => V): KeyMap<V> {
   const result: KeyMap<V> = {}
   for (const key in map) {
     const item = map[key]
