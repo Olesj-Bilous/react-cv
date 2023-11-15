@@ -19,7 +19,8 @@
 		height: 942pt; // should be this value - 100 but for some reason that leaves a blank space below the pdf
 		display: flex;
 		flex-direction: column;
-		justify-content: center;}
+		justify-content: center;
+	}
 
 	&.edit-allowed {
 		.editable {
@@ -63,9 +64,13 @@
 	h1, h2, h4, h5, ul {
 		margin-block-start: 0;
 		margin-block-end: 0;
-	}
-
+	} 
 	h3 {
+	 	margin-block-start: 0.3rem;
+	 	margin-block-end: 0.2rem;
+	 }
+
+	.profile h3 {
 		margin-block-start: 0.6rem;
 		margin-block-end: 0.4rem;
 	}

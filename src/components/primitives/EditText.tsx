@@ -16,7 +16,7 @@ export const DisplayText = memo(({ display }: { display?: string }) => {
       const text = middle?.[0]?.trim()
       if (text) {
         const right = middle[1]?.split(']')
-        if (right?.[1]) {
+        if (right?.[1] !== undefined) {
           if (isUrl(right[0]!)) {
             blocks.push(<Fragment key={i}><a href={right[0]}>{text}</a>{right[1]}</Fragment>)
             continue

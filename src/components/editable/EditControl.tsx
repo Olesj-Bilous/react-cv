@@ -55,7 +55,7 @@ export const EditControl = memo(
             <button disabled={!isTouched} onClick={revert}>
               <FontAwesomeIcon icon={undo} />
             </button>
-            {!create && deleteM! && <button onClick={deleteM}>
+            {!create && deleteM && <button onClick={deleteM}>
               <FontAwesomeIcon icon={deleteIconDef} />
             </button>}
           </>
