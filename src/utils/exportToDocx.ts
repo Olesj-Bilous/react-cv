@@ -1,20 +1,26 @@
-import { Document, Paragraph, TextRun, HeadingLevel, Packer, ISectionOptions, SectionType, ExternalHyperlink } from "docx";
+import { Document, Paragraph, TextRun, HeadingLevel, Packer, ISectionOptions, SectionType, ExternalHyperlink, SymbolRun } from "docx";
 import { useZustand } from "../hooks/useZustand";
-import { mapProfileSections } from "../components/Profile";
+import { mapProfileSections } from "../models/mapProfileSections";
 import { displayPeriod } from "./dateConverters";
 import { hyperize } from "./hyperize";
 import { scaleRating } from "../components/primitives/EditRating";
 
 function hyperText(text: string) {
-  return hyperize(text, (i, text, url) => url ? new ExternalHyperlink({
-    children: [
-      new TextRun({
-        text,
-        style: "Hyperlink",
-      }),
-    ],
-    link: url
-  }) : new TextRun(text))
+  return hyperize(
+    text,
+    (i, text, url) => url
+      ? new ExternalHyperlink({
+        children: [
+          new TextRun({
+            text,
+            style: "Hyperlink",
+          }),
+        ],
+        link: url
+      })
+      : new TextRun(text),
+    ''
+  )
 }
 
 function handlePeriod({ title, subtitle, startDate, endDate, dateSettings, dateStyle }: ModelType<Period> & {
@@ -54,7 +60,12 @@ function handlePeriod({ title, subtitle, startDate, endDate, dateSettings, dateS
 export async function exportToDocx(
   dateSettings: {
     locales: Intl.LocalesArgument, present: string
-  }
+  },
+  localRating: [
+    weak: string, beginner: string, learning: string, intermediate: string, good: string, verygood: string
+  ] = [
+      'weak', 'beginner', 'learning', 'intermediate', 'good', 'very good'
+    ]
 ) {
   const state = useZustand.getState()
 
@@ -89,13 +100,9 @@ export async function exportToDocx(
                 children: hyperText(value.skill)
               })
             )
-            const [scale, rating] = scaleRating(value.rating, 5)
-            let stars = ''
-            for (let i = 0; i < scale; i++) {
-              stars += String.fromCharCode(i < rating ? 0x2605 : 0x2606)
-            }
+            const [_, rating] = scaleRating(value.rating, 5)
             children.push(
-              new Paragraph(stars)
+              new Paragraph({ text: localRating[rating] })
             )
           }
         }

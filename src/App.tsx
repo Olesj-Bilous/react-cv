@@ -30,7 +30,7 @@ function App() {
       <EditPermissionContext.Provider value={{ allowEdit }}>
         <button onClick={() => setEditAllowance(!allowEdit)}>toggle edit</button>
         <button disabled={allowEdit} onClick={() => { window.print() }}>PDF</button>
-        <button onClick={() => exportToDocx(dateSettings)}>docx</button>
+        <button onClick={() => exportToDocx(dateSettings, ['zwak', 'beginner', 'lerend', 'gemiddeld', 'goed', 'zeer goed'])}>docx</button>
         <div id="document" className={allowEdit ? 'edit-allowed' : ''}>
           <EditProfileHeader {...{
             id,

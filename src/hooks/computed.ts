@@ -1,5 +1,5 @@
 import { filterMap } from '../utils/mapQueries'
-import { ProfileSections } from '../components/Profile'
+import { ProfileSections } from '../models/mapProfileSections'
 import { sectionEventsByEra } from '../models/sectionEventsByEra'
 
 export const computed = <T extends ModelStore>(get: () => T) => ({
@@ -18,7 +18,6 @@ export const computed = <T extends ModelStore>(get: () => T) => ({
   getMainPeriods(): SectionArray<Model & {features: string[]}> {
     const periods = get().periods.models
     const [eras] = this.getMainEraFilter()
-    const profile = this.getSelectedProfile()
     const sections = sectionEventsByEra(
       periods,
       eras

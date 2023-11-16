@@ -33,10 +33,7 @@ export function useModelEditor<T extends object>(
     [model, toggled]
   )
 
-  const isTouched = useMemo(
-    () => !shallowCompare(model, globalModel),
-    [model, globalModel]
-  )
+  const isTouched = !shallowCompare(model, globalModel)
 
   const setFactory = useCallback(
     (propKey: keyof T) => useCallback(

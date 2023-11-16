@@ -1,8 +1,6 @@
 import { FC, Fragment, memo } from 'react'
 import { editorFactory } from './factory.Editor'
 import { entoggleValueEdit } from '../editable/entoggle'
-import { isUrl } from '../../utils/checks/stringRefinery'
-import { ContactText } from './EditContactText'
 import { hyperize } from '../../utils/hyperize'
 
 export const DisplayText = memo(({ display }: { display?: string }) => {
