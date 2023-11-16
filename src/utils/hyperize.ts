@@ -1,34 +1,46 @@
 import { isUrl } from "./checks/stringRefinery"
 
 export function hyperize<H>(text: string, hypermap: (index: number, text: string, url?: string) => H): H[] {
-  const left = text.split('(')
   const blocks = []
-  if (left[0]) {
-    blocks.push(hypermap(0, left[0], isUrl(left[0]) ? left[0] : undefined))
+  let count = 0;
+
+  const left = text.split('[')
+
+  const first = left[count]
+  if (first) {
+    blocks.push(hypermap(count++, first, isUrl(first) ? first : undefined))
   }
-  for (let i = 1; i < left.length; i++) {
-    const middle = left[i]?.split(')[')
-    if (middle) {
-      const text = middle?.[0]?.trim()
-      if (text) {
-        const right = middle[1]?.split(']')
-        if (right?.[0] !== undefined) {
-          if (isUrl(right[0])) {
-            blocks.push(hypermap(i, text, right[0]))
-            if (right?.[1] !== undefined) {
-              blocks.push(hypermap(i, right[1]))
-            }
-            continue
-          }
+
+  for (const lefty of left) {
+    const middle = lefty.split('](')
+    const text = middle[0]?.trim()
+
+    if (text) {
+      const right = middle[1]?.split(')')
+      const url = right?.[0]
+
+      if (url && isUrl(url)) {
+        blocks.push(hypermap(count++, text, url))
+
+        const remainder = right?.[1]
+        if (remainder !== undefined) {
+          blocks.push(hypermap(count++, remainder, isUrl(remainder) ? remainder : undefined))
         }
+
+        continue
       }
     }
-    if (left[i] !== undefined) {
-      if (isUrl(left[i]!))
-        blocks.push(hypermap(-i, '('), hypermap(i, left[i]!, left[i]))
-      else
-        blocks.push(hypermap(i, `(${left[i]}`))
+
+    if (isUrl(lefty)) {
+      blocks.push(
+        hypermap(count++, '('),
+        hypermap(count++, lefty, lefty)
+      )
+    }
+    else {
+      blocks.push(hypermap(count++, `(${lefty}`))
     }
   }
+
   return blocks
 }
