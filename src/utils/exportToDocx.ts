@@ -33,25 +33,28 @@ function handlePeriod({ title, subtitle, startDate, endDate, dateSettings, dateS
   children.push(
     new Paragraph({
       heading: HeadingLevel.HEADING_2,
+      //style: 'article',
       children: hyperText(title)
     })
   )
   if (subtitle) {
     children.push(
       new Paragraph({
-        heading: HeadingLevel.HEADING_3,
+        heading: HeadingLevel.HEADING_5,
         children: hyperText(subtitle)
       })
     )
   }
   children.push(
     new Paragraph({
-      heading: HeadingLevel.HEADING_4,
-      text: displayPeriod(
-        dateSettings,
-        { dateStyle },
-        { startDate: startDate, endDate: endDate }
-      )
+      children: [new TextRun({
+        text: displayPeriod(
+          dateSettings,
+          { dateStyle },
+          { startDate: startDate, endDate: endDate }
+        ),
+        italics: true
+      })]
     })
   )
   return children
@@ -129,7 +132,8 @@ export async function exportToDocx(
     return {
       properties: {
         type: SectionType.CONTINUOUS
-      }, children
+      },
+      children
     }
   })
   const mainSections = state.getMainPeriods()
@@ -140,6 +144,7 @@ export async function exportToDocx(
     main.push(
       new Paragraph({
         heading: HeadingLevel.HEADING_1,
+        //style: 'section',
         children: hyperText(title)
       })
     )
@@ -150,6 +155,7 @@ export async function exportToDocx(
       )
       if (period.introduction) {
         main.push(new Paragraph({
+          style: 'intro',
           children: hyperText(period.introduction)
         }))
       }
@@ -170,7 +176,7 @@ export async function exportToDocx(
         text: profileProps.title
       }),
       new Paragraph({
-        heading: HeadingLevel.HEADING_1,
+        heading: HeadingLevel.HEADING_2,
         text: profileProps.subtitle
       })
     ]
@@ -178,13 +184,82 @@ export async function exportToDocx(
   if (profileProps.introduction) {
     header.children.push(
       new Paragraph({
+        style: 'intro',
         children: hyperText(profileProps.introduction)
       })
     )
   }
 
   const doc = new Document({
-    sections: [header, ...profileMap, { children: main }]
+    sections: [
+      header,
+      ...profileMap,
+      {
+        properties: {
+          type: SectionType.CONTINUOUS
+        },
+        children: main
+      }
+    ],
+    styles: {
+      default: {
+        heading1: {
+          paragraph: {
+            spacing: {
+              before: 140
+            },
+            keepLines: true,
+            keepNext: true
+          },
+          basedOn: HeadingLevel.HEADING_1
+        },
+        heading2: {
+          paragraph: {
+            spacing: {
+              before: 100
+            },
+            keepLines: true,
+            keepNext: true
+          },
+          basedOn: HeadingLevel.HEADING_2
+        },
+        heading3: {
+          paragraph: {
+            spacing: {
+              before: 100
+            },
+            keepLines: true,
+            keepNext: true
+          },
+          basedOn: HeadingLevel.HEADING_3
+        },
+        heading5: {
+          paragraph: {
+            keepLines: true,
+            keepNext: true
+          },
+          basedOn: HeadingLevel.HEADING_5
+        },
+        listParagraph: {
+          paragraph: {
+            spacing: {
+              before: 80
+            }
+          },
+          basedOn: 'ListParagraph'
+        }
+      },
+      paragraphStyles: [
+        {
+          id: 'intro',
+          paragraph: {
+            spacing: {
+              before: 80
+            }
+          }
+        }
+      ]
+    }
   })
   const blob = await Packer.toBlob(doc)
   const url = window.URL.createObjectURL(blob)
@@ -193,6 +268,6 @@ export async function exportToDocx(
   a.href = url
   a.download = 'my-react-cv.docx'
   document.body.appendChild(a)
-  a.click();
-  window.URL.revokeObjectURL(url);
+  a.click()
+  window.URL.revokeObjectURL(url)
 }
