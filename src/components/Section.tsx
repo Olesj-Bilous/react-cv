@@ -8,26 +8,26 @@ import { AddPeriodHeader } from "./headers/Header.Period.Add"
 export function Section<I extends Model = Model>({ id, items, Component, AddComponent }
   : Section<I> & {
     Component: React.FC<I>
-    AddComponent?: React.FC<{eraId: string}>
+    AddComponent?: React.FC<{ eraId: string }>
   }
 ) {
-  const {allowEdit}=useEditPermissionContext()
+  const { allowEdit } = useEditPermissionContext()
 
   return (
     <section>
-      <EditSectionHeader {...{id}} />
+      <EditSectionHeader {...{ id }} />
       <ul>
         <HeaderLevelContext.Provider value={{ level: 4 }}>
           {
             items.map((item, i) => (
-              <li key={item.id}>
+              <li key={i}>
                 <Component {...item} />
               </li>
             ))
           }
           {
             allowEdit && AddComponent && <li>
-              <AddComponent eraId={id} /> 
+              <AddComponent eraId={id} />
             </li>
           }
         </HeaderLevelContext.Provider>
