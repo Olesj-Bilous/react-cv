@@ -25,7 +25,7 @@ export const initStore: ModelStore = {
         order: 2
       }
     },
-    count: 1
+    count: 2
   },
   ratedSkills: {
     models: {
@@ -93,7 +93,7 @@ export const initStore: ModelStore = {
         period: '0'
       }
     },
-    count: 3
+    count: 2
   },
   eras: {
     models: {
@@ -140,7 +140,7 @@ export const initStore: ModelStore = {
         order: 3
       }
     },
-    count: 3
+    count: 6
   },
   profiles: {
     models: {
@@ -153,6 +153,6 @@ export const initStore: ModelStore = {
         img: 'john-wayne.webp'
       }
     },
-    count: 1
+    count: 0
   }
 }
