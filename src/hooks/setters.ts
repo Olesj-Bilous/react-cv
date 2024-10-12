@@ -16,9 +16,9 @@ export const setters = <T>(set: setZustand<ModelStore>, get: () => ModelStore & 
           models: {
             ...store[modelType].models,
             [id]: {
-              id,
               ...store[modelType].models[id],
-              ...partial
+              ...partial,
+              id
             }
           }
         }

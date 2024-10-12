@@ -20,13 +20,13 @@ export function Section<I extends Model = Model>({ id, items, Component, AddComp
         <HeaderLevelContext.Provider value={{ level: 4 }}>
           {
             items.map((item, i) => (
-              <li key={i}>
+              <li key={item.id}>
                 <Component {...item} />
               </li>
             ))
           }
           {
-            allowEdit && AddComponent && <li>
+            allowEdit && AddComponent && <li key="add">
               <AddComponent eraId={id} />
             </li>
           }
