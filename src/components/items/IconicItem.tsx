@@ -16,7 +16,7 @@ export function EditIconicItem({ id }: Model) {
   return <IconicItemControl {...{
     control,
     map,
-    deleteM: 2 < parseInt(id) ? deleteM : undefined
+    deleteM: 1 < parseInt(id) ? deleteM : undefined
   }} />
 }
 
